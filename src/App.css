@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap");
 
 div#root {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 * {
@@ -34,7 +34,7 @@ th {
 }
 
 /* Header Start */
-.incons-banner {
+.icons-banner {
   display: flex;
   align-items: center;
 }
@@ -163,6 +163,14 @@ th {
     top: 9px;
     left: 30px;
   }
+
+  .header-top-strip span {
+    font-size: 0.65rem;
+  }
+
+  .header-group-icons {
+    justify-content: center;
+  }
 }
 /* Header End */
 
@@ -288,6 +296,18 @@ th {
   .home-banner {
     height: 14rem;
   }
+
+  .banner-detail h4 {
+    font-size: 1.25rem;
+  }
+
+  .banner-detail h2 {
+    font-size: 1.5rem;
+  }
+
+  .banner-button {
+    font-size: 1rem;
+  }
 }
 
 /* policy */
@@ -314,7 +334,11 @@ th {
 .newProds-item {
   background-color: #09181c;
   color: white;
-  max-width: 298px;
+  max-width: 290px;
+}
+
+.newProds-item:hover {
+  box-shadow: 6px 6px 20px #f60e003d;
 }
 
 .newProds-img {
@@ -349,6 +373,13 @@ th {
 .newProds-priceOld {
   color: #d8d9e1;
   font-size: 0.7rem;
+}
+
+.newProds-item .card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Số dòng tối đa */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 @media only screen and (max-width: 768px) {

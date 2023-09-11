@@ -15,8 +15,8 @@ function sliderHome() {
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1,
-        // autoplay: true,
-        autoplaySpeed: 5000,
+        autoplay: true,
+        autoplaySpeed: 4500,
         cssEase: "linear",
         pauseOnHover: true,
         appendDots: dots => (

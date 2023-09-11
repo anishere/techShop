@@ -5,7 +5,7 @@ function banner() {
     return (
         <div className="home-banner">
             <video autoPlay muted loop className="banner-video">
-                <source src={bannerVideo}/>
+                <source autoPlay src={bannerVideo}/>
             </video>
             <div className='banner-detail'>
                 <h4>Tech Shop</h4>

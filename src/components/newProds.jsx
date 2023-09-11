@@ -22,7 +22,7 @@ function newProds() {
     }, [])
 
     return (<>
-       <div className="container-xxl newProds p-2 my-5">
+       <div className="container-xxl newProds p-2 overflow-hidden my-5">
             <h2 className="text-center">Sản phẩm mới</h2>
             <div className="row d-flex justify-content-between mt-5">
                 {newProds && newProds.map((prod) => {

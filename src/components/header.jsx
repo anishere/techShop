@@ -31,10 +31,10 @@ function header() {
         <>
         <header className="header-top-strip p-2 shadow-sm">
             <div className="container-xxl">
-                <div className="p-md-1 d-md-flex align-items-center">
+                <div className="p-md-1 d-flex header-group-icons align-items-center">
                     <span className='icons-banner text-white'><Link><HiOutlineMail className='fs-4 text-white mx-1'/></Link><span>CONTACT</span></span>
                     <span className='icons-banner text-white mx-1'><Link><AiOutlineClockCircle className ='fs-5 text-white mx-1'/></Link><span>08:00 - 17:00</span></span>
-                    <span className='icons-banner text-white mx-1'><Link><FaPhoneAlt className ='fs-6 text-white mx-1'/></Link><span>{phone}</span></span>
+                    <span className='d-flex align-items-center text-white mx-1'><Link><FaPhoneAlt className ='fs-6 text-white mx-1'/></Link><span>{phone}</span></span>
                 </div>
             </div>
         </header>
