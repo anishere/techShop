@@ -245,7 +245,7 @@ th {
 .banner-detail {
   position: absolute;
   top: 200px;
-  left: 80px;
+  left: 120px;
   color: white;
   text-shadow: 2px 2px 4px rgb(255 1 1 / 53%);
 }
@@ -274,7 +274,7 @@ th {
   left: 0;
   width: 0%;
   height: 100%;
-  background: linear-gradient(to right, red 0%, blue 100%);
+  background: linear-gradient(to right, red 0%, blue 60%);
   transition: all 0.3s;
   z-index: -1;
 }
@@ -364,6 +364,10 @@ th {
 
 .newProds-item a:hover {
   border-color: #44d62c;
+}
+
+.newProds-item .card-body {
+  padding: 16px 6px;
 }
 
 .newProds-price {
