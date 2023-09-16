@@ -338,7 +338,7 @@ th {
 }
 
 .newProds-item:hover {
-  box-shadow: 6px 6px 20px #f60e003d;
+  box-shadow: 0 0 20px 6px #4ef6003d;
 }
 
 .newProds-img {

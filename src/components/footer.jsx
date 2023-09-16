@@ -36,7 +36,7 @@ function footer() {
                             <div className="col-5 social-icons d-flex justify-content-around">
                                 <Link to={'https://discord.com/'}><BsDiscord/></Link>
                                 <Link to={'https://www.facebook.com/profile.php?id=100035519748585'}><BsFacebook/></Link>
-                                <Link to={'https://github.com/anishere/ecommerceShop'}><BsGithub/></Link>
+                                <Link to={'https://github.com/anishere/techShop.git'}><BsGithub/></Link>
                                 <Link to={'https://slack.com/'}><BsSlack/></Link>
                             </div>
                         </div>
