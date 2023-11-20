@@ -1,12 +1,15 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
 import { URLhotProds } from "../URL/url";
 import { axiosCus } from "../axios/axios";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { UpInfoProd } from "../redux/detailSlice";
+import { useDispatch } from "react-redux";
 
 function hotProds() {
-
+    const dispatch = useDispatch()
     const [hotProds, setHotProds] = useState()
 
     useEffect(() => {
@@ -21,6 +24,10 @@ function hotProds() {
         fetchData();
     }, [])
 
+    const handleSelectProd = (id, type) => {
+        dispatch(UpInfoProd({id, type}))
+    }
+
     return (
         <div className="container-xxl newProds p-2 overflow-hidden my-5">
             <h2 className="text-center">Sản phẩm HOT</h2>
@@ -33,7 +40,7 @@ function hotProds() {
                         </div>
                         <div className="card-body">
                             <h6>{prod.brand}</h6>
-                            <h6 className="card-title">{prod.productName}</h6>
+                            <Link to={'detail'} className="text-white" onClick={() => handleSelectProd(prod.productID, prod.type)}><h6 className="card-title">{prod.productName}</h6></Link>
                             <p className="card-text mb-1 newProds-price">{(prod.price - (prod.price * prod.discount)).toLocaleString('vi-VN')}đ <span className="newProds-priceOld"><strike>{prod.price.toLocaleString('vi-VN')}đ</strike></span></p>
                             <Link href="#" className="btn my-2">Mua ngay</Link>
                         </div>

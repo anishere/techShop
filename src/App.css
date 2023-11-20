@@ -247,7 +247,7 @@ th {
   top: 200px;
   left: 120px;
   color: white;
-  text-shadow: 2px 2px 4px rgb(255 1 1 / 53%);
+  text-shadow: 3px 3px 4px rgb(0 0 0);
 }
 
 .banner-detail h4 {
@@ -472,6 +472,103 @@ li.slick-active div {
 }
 
 /* Home end */
+
+/* Detail start */
+.detail {
+  margin: 100px 0;
+}
+
+.detail .detail-text p {
+  font-size: 0.75rem;
+  max-width: 80%;
+  margin: inherit;
+}
+
+.detail .other img {
+  max-width: 95px;
+}
+
+.detail-edit input {
+  width: 40%;
+}
+
+.detail-text .button-link {
+  width: auto;
+}
+
+.other div {
+  margin: auto;
+  width: 70%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.detail .other h5 {
+  color: #00a97f;
+}
+
+.detail .other span {
+  font-size: 0.75rem;
+}
+
+.desDetail {
+  background-color: white;
+  color: black;
+}
+
+.desDetail p {
+  margin: 8px 0;
+}
+
+.detail-icons {
+  color: #1435c3;
+}
+
+.btn-buy {
+  background-color: #cca27e;
+  transition: 0.3s ease;
+}
+
+.btn-buy:hover {
+  border-color: #44d62c;
+}
+
+/* Detail end */
+
+/* Shop start */
+
+.banner-shop {
+  background: url("./imgs/bannerShop.webp");
+  background-size: cover;
+  width: 100%;
+  height: 420px;
+  background-position: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 60px;
+}
+
+.bannerShop-detail {
+  text-shadow: 3px 3px 4px rgb(0 0 0);
+}
+
+.prodsShop h2 {
+  margin: auto;
+  border-bottom: 2px solid #cca27e;
+  width: 20%;
+}
+
+.buttonBrand {
+  background-color: #cca27e;
+  transition: 0.3s ease;
+}
+
+.buttonBrand:hover {
+  border-color: #44d62c;
+}
+
+/* Shop end */
 
 /* Admin start */
 

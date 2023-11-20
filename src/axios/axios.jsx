@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const axiosCus = axios.create({
 	// Configuration
-	baseURL: 'https://antran-001-site1.atempurl.com/api/',
+	baseURL: 'https://localhost:44333/api/',
 });
 
 axiosCus.interceptors.response.use(function (response) {
