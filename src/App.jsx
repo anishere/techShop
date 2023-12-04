@@ -10,11 +10,17 @@ import Contact from './pages/contact'
 import Cart from './pages/cart'
 import Payment from './pages/payment'
 import Admin from './pages/admin'
+import DetailUpdate from './pages/detailUpdate'
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // deploy
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import ScrollToTop from './components/scrollToTop'
+import ScrollToTopButton from './components/ScrollToTopButton'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -41,11 +47,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop/>
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />}/>
             <Route path='shop' element={<Shop />}/>
             <Route path='detail' element={<Detail/>}/>
+            <Route path='detailUpdate' element={<DetailUpdate/>}/>
             <Route path='about' element={<About />}/>
             <Route path='contact' element={<Contact />}/>
             <Route path='login' element={<Login />}/>
@@ -54,6 +62,8 @@ function App() {
             <Route path='admin' element={<Admin/>}/>
           </Route>
         </Routes>
+        <ToastContainer />
+        <ScrollToTopButton/>
       </BrowserRouter>
     </>
   )

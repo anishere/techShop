@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { URLnewProds } from "../URL/url";
 import { useEffect } from "react";
 import { axiosCus } from "../axios/axios";
-import { useDispatch } from 'react-redux'
-import { UpInfoProd } from "../redux/detailSlice";
+import { useDispatch, useSelector } from 'react-redux'
+import { UpInfoProd, addItem } from "../redux/detailSlice";
 
 function newProds() {
     const dispatch = useDispatch()
@@ -27,6 +27,13 @@ function newProds() {
         dispatch(UpInfoProd({id, type}))
     }
 
+    //buy
+    const ids = useSelector(state => state.prod.ids)
+
+    const handleAddItem = (id) => {
+        dispatch(addItem(id))
+    }
+
     return (<>
        <div className="container-xxl newProds p-2 overflow-hidden my-5">
             <h2 className="text-center">Sản phẩm mới</h2>
@@ -41,7 +48,9 @@ function newProds() {
                             <h6>{prod.brand}</h6>
                             <Link to={'detail'} className="text-white" onClick={() => handleSelectProd(prod.productID, prod.type)}><h6 className="card-title">{prod.productName}</h6></Link>
                             <p className="card-text mb-1 newProds-price">{(prod.price - (prod.price * prod.discount)).toLocaleString('vi-VN')}đ <span className="newProds-priceOld"><strike>{prod.price.toLocaleString('vi-VN')}đ</strike></span></p>
-                            <Link href="#" className="btn my-2">Mua ngay</Link>
+                            <Link onClick={() => {handleAddItem(prod.productID)}} href="" className="btn my-2">Mua ngay
+                            { ids[prod.productID] > 0 && <span>&nbsp;({ids[prod.productID]})</span>}
+                            </Link>  
                         </div>
                     </div>
                     )

@@ -7,6 +7,7 @@ import { FaPhoneAlt } from 'react-icons/fa'
 // import { VscAccount } from 'react-icons/vsc'
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function header() {
     const location = useLocation()
@@ -26,6 +27,15 @@ function header() {
         };
         fetchData();
     }, []);
+
+    //total items
+    const ids = useSelector(state => state.prod.ids) //Obj
+    const values = Object.values(ids); //Lay tat gia tri tu obj ids value[]
+    const totalItems = values.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+    //check auth
+    const isAuth = useSelector((state) => state.auth.isAuthenticated)
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
     return (
         <>
@@ -59,9 +69,10 @@ function header() {
                             <li className="nav-item ms-3 mx-md-3">
                                 <Link to={'contact'} className={location.pathname === '/contact' ? 'nav-link active' : 'nav-link'}>Liên hệ</Link>
                             </li>
+                            {(isAuth || isLoggedIn) && 
                             <li className="nav-item ms-3 mx-md-3">
                                 <Link to={'admin'} className={location.pathname === '/admin' ? 'nav-link active' : 'nav-link'}>Admin</Link>
-                            </li>
+                            </li>}
                         </ul>
                     </nav>
                 </div>
@@ -70,9 +81,9 @@ function header() {
                             <p>Account</p>
                         </Link> */}
                         <Link to={'cart'} className='sec-cart position-relative ms-3 ms-md-0 mx-md-2 d-flex'>
-                            <p className='price'>0đ</p>
                             <BsBag className='fs-3 mx-2 mx-md-2 mb-md-2'/>
-                            {<p className='text-center totalItems'>{0}</p>}
+                            {totalItems > 0 && <p className='text-center totalItems'>{totalItems}</p>}
+                            <p>Cart</p>
                         </Link>
                 </div>
             </div>

@@ -23,3 +23,42 @@ export const URLIDCPU = 'api/ProductsCPU/GetCPUById/3'
 
 export const URLnewProds = 'ProductsPCLap/LatestLapPc?count=4'
 export const URLhotProds = 'ProductsPCLap/HotProducts'
+
+//Total Product
+export const URLtotalProd = 'ProductsPCLap/TotalCount'
+export const URLtotalProdBrand = 'ProductsPCLap/ProductCountByBrand/'
+
+//CUD Product
+export const URLupdateProd = 'ProductsPCLap/UpdateLapPc/'
+export const URLaddProd = 'ProductsPCLap/AddLapPc/'
+export const URLdeleteProd = 'ProductsPCLap/DeleteLapPc/'
+
+//Update InfoShop
+export const URLupdateInfoShop = 'InfoShop/UpdateInfoShop'
+
+//Update About
+export const URLupdateAbout = 'About/UpdateAbout'
+
+//Get about
+export const URLgetAbout = 'About/GetAbout'
+
+//Delete Order
+export const URLdeleteOrder = 'Information/DeleteInformationById/'
+
+//Delete Feedback
+export const URLdeleteFeedback = 'Message/DeleteMess/'
+
+//Login
+export const URLlogin = 'Account/login/'
+
+//Change Password
+export const URLchangePass = 'Account/update?newPassword='
+
+//Get all prod
+export const URLgetALL = 'ProductsPCLap/GetAllProducts'
+
+//Order
+export const URLorder = 'Information/AddInformation'
+
+//Add feedback
+export const URLaddFeedBack = 'Message/AddMess'
