@@ -70,9 +70,9 @@ function cart() {
                             <div className="col-md-7">
                                 <div className="cart-item-detail">
                                     <h5>{product.productName}</h5>
-                                    <p>Product Brand: <b>{product.brand}</b></p>
-                                    <p>Product Price: <b>{(product.price - (product.price * product.discount)).toLocaleString('vi-VN')}đ</b></p>
-                                    <p>Product Number: <b>{product.productID}</b></p>
+                                    <p>Hãng: <b>{product.brand}</b></p>
+                                    <p>Đơn giá: <b>{(product.price - (product.price * product.discount)).toLocaleString('vi-VN')}đ</b></p>
+                                    <p>Mã sản phẩm: <b>{product.productID}</b></p>
                                 </div>
                                 <div className="cart-item-edit d-flex justify-content-between px-md-3 my-4 text-md-center">
                                     <div className="my-auto">
@@ -83,21 +83,21 @@ function cart() {
                                     <button onClick={() => handleDelete(product.productID)} className="delete-button"><AiFillDelete/></button>
                                 </div>
                                 <div className="px-3">
-                                    <input  type="text" className="form-control" placeholder="Enter coupon code..." aria-describedby="basic-addon1"/>
+                                    <input  type="text" className="form-control" placeholder="Nhập mã giảm giá..." aria-describedby="basic-addon1"/>
                                 </div>
                             </div>
                         </div> 
                         )})
                     }
                         <div className="clearCart col-md-11 mx-auto my-3 d-md-flex justify-content-end">
-                            <button onClick={() => handleClearCart()}>Clear Cart</button>
+                            <button onClick={() => handleClearCart()}>Xóa hết</button>
                         </div>
                         <hr className="col-11 mx-auto" />
 
                         <div className="cart-end col-md-11 mx-auto d-md-flex justify-content-between">
                             <div className="my-3">
-                                <Link to={'../shop'}>Continue Shopping</Link>
-                                <Link onClick={() => handlePay(totalPriceItems)} to={'../payment'} className="mx-4">Pay</Link>
+                                <Link to={'../shop'}>Tiếp tục mua sắm</Link>
+                                <Link onClick={() => handlePay(totalPriceItems)} to={'../payment'} className="mx-4">Đặt hàng</Link>
                             </div>
                             <div className="text-success">
                                 <h4>Total</h4>

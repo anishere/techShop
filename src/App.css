@@ -515,6 +515,11 @@ li.slick-active div {
 
 .detail-edit input {
   width: 40%;
+  height: 100%;
+}
+
+button.btn.btn-outline-secondary {
+  margin-top: 0px;
 }
 
 .detail-text .button-link {
@@ -679,7 +684,7 @@ a.page-link {
 }
 
 .cart-item-edit input {
-  width: 10%;
+  width: 20%;
   border: none;
   border-radius: 0.375rem;
   border-bottom: 1px solid #ccc;

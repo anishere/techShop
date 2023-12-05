@@ -1,12 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { URLIDLapPC, URLhotProds } from '../URL/url';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
 import { FaShippingFast } from "react-icons/fa";
 import { AiOutlineFileProtect } from "react-icons/ai";
+import { addItem, editQuantity, reduceItem } from '../redux/detailSlice';
 
 function detail() {
+    const ids = useSelector(state => state.prod.ids)
     const [hotProds, setHotProds] = useState()
     const [prod, setProd] = useState()
     const detail = useSelector((state) => state.prod)
@@ -37,9 +39,14 @@ function detail() {
         }
     },[])
 
-    const handleIncrease = () => {}
-    const handleEditValue = () => {}
-    const handleReduce = () => {}
+    const dispatch = useDispatch();
+
+    const handleIncrease = id => dispatch(addItem(id))
+    const handleEditValue = (e, id) => {
+        const obj = {data: +e.target.value, id}
+        dispatch(editQuantity(obj))
+    }
+    const handleReduce = id => dispatch(reduceItem(id))
 
     return (
         <>
@@ -61,12 +68,12 @@ function detail() {
                             <span><FaShippingFast className='detail-icons fs-5 my-1' />&nbsp; Miễn phí đơn hàng từ 5 triệu</span>
                             <span><AiOutlineFileProtect className='detail-icons fs-5 my-1' />&nbsp; Cam kết hàng chính hãng 100%</span>
                             <div className="detail-edit d-flex my-2">
-                                <button onClick={() => handleIncrease(prod.id)} className="btn btn-outline-secondary">+</button>
-                                <input onChange={(e) => handleEditValue(e, prod.id)} className="mx-2 text-center form-control" type="number"/>
-                                <button onClick={() => handleReduce(prod.id)} className="btn btn-outline-secondary">-</button>
+                                <button onClick={() => handleIncrease(prod.productID)} className="btn btn-outline-secondary">+</button>
+                                <input value={ids[prod.productID]} onChange={(e) => handleEditValue(e, prod.productID)} className="mx-2 text-center form-control" type="number"/>
+                                <button onClick={() => handleReduce(prod.productID)} className="btn btn-outline-secondary">-</button>
                             </div>
                             <div className="my-3">
-                                <button onClick={() => handleIncrease(prod.id)} className="col-2 btn-buy btn">Mua</button>
+                                <button onClick={() => handleIncrease(prod.productID)} className="col-2 btn-buy btn">Mua</button>
                             </div>
                         </div>
                         <div className="other p-3 text-center card col-md-12">

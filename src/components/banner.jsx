@@ -10,7 +10,7 @@ function banner() {
             <div className='banner-detail'>
                 <h4>Tech Shop</h4>
                 <h2 className='mb-3'>Công nghệ đánh thức đam mê</h2>
-                <Link className='banner-button'>Khám phá ngay</Link>
+                <Link to={'shop'} className='banner-button'>Khám phá ngay</Link>
             </div>
         </div>
     );

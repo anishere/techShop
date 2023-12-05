@@ -54,7 +54,7 @@ function sliderHome() {
                             <div className="sliderHome-content-detail">
                                 <h4>Thêm năng lượng cho công việc</h4>
                                 <p className="my-3">Tăng cường hiệu suất để có năng suất tuyệt vời hơn</p>
-                                <Link>Mua ngay</Link>
+                                <Link to={'shop'} >Mua ngay</Link>
                             </div>
                         </div>
                         <div className="sliderHome-content">
@@ -62,7 +62,7 @@ function sliderHome() {
                             <div className="sliderHome-content-detail">
                                 <h4>Hỗ trợ nâng cấp</h4>
                                 <p className="my-3">Nâng cấp siêu ưu đãi khi sản phẩm còn bảo hành</p>
-                                <Link>Mua ngay</Link>
+                                <Link to={'shop'} >Mua ngay</Link>
                             </div>
                         </div>
                         <div className="sliderHome-content">
@@ -70,7 +70,7 @@ function sliderHome() {
                             <div className="sliderHome-content-detail">
                                 <h4>Hỗ trợ phụ kiện</h4>
                                 <p className="my-3">Phụ kiện giảm sâu khi mua cùng sản phẩm chính</p>
-                                <Link>Mua ngay</Link>
+                                <Link to={'shop'} >Mua ngay</Link>
                             </div>
                         </div>
                         </Slider>

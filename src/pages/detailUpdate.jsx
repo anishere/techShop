@@ -4,35 +4,65 @@ import { URLIDLapPC, URLupdateProd } from '../URL/url';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function detailUpdate() {
     const [prod, setProd] = useState()
     const detail = useSelector((state) => state.prod)
 
     // two ways for input
-    const [name, setName] = useState()
-    const [brand, setBrand] = useState()
-    const [des, setDes] = useState()
-    const [discount, setDiscount] = useState()
-    const [price, setPrice] = useState()
-    const [warranty, setWarranty] = useState()
-    const [image, setImage] = useState()
-    const [type, setType] = useState()
-    const [CPU, setCPU] = useState()
-    const [RAM, setRAM] = useState()
-    const [screen, setScreen] = useState()
-    const [PIN, setPIN] = useState()
-    const [OS, setOS] = useState()
-    const [weight, setWeight] = useState()
-    const [GPU, setGPU] = useState()
-    const [keyboard, setKeyboard] = useState()
-    const [color, setColor] = useState()
-    const [demand, setDemand] = useState()
-    const [storage, setStorage] = useState()
-    const [accessory, setAccessory] = useState()
-    const [connect, setConnect] = useState()
-    const [dateUpdate, setDateUpdate] = useState()
-    const [hot, setHot] = useState()
+    const [name, setName] = useState('');
+    const [brand, setBrand] = useState('');
+    const [des, setDes] = useState('');
+    const [discount, setDiscount] = useState('');
+    const [price, setPrice] = useState('');
+    const [warranty, setWarranty] = useState('');
+    const [image, setImage] = useState('');
+    const [type, setType] = useState('');
+    const [CPU, setCPU] = useState('');
+    const [RAM, setRAM] = useState('');
+    const [screen, setScreen] = useState('');
+    const [PIN, setPIN] = useState('');
+    const [OS, setOS] = useState('');
+    const [weight, setWeight] = useState('');
+    const [GPU, setGPU] = useState('');
+    const [keyboard, setKeyboard] = useState('');
+    const [color, setColor] = useState('');
+    const [demand, setDemand] = useState('');
+    const [storage, setStorage] = useState('');
+    const [accessory, setAccessory] = useState('');
+    const [connect, setConnect] = useState('');
+    const [dateUpdate, setDateUpdate] = useState('');
+    const [hot, setHot] = useState('');
+
+    useEffect(() => {
+        // Kiểm tra xem prod có tồn tại không
+        if (prod) {
+          setName(prod.productName || '');
+          setBrand(prod.brand || '');
+          setDes(prod.description || '');
+          setDiscount(prod.discount || '');
+          setPrice(prod.price || '');
+          setWarranty(prod.baoHanh || '');
+          setImage(prod.image || '');
+          setType(prod.type || '');
+          setCPU(prod.cpu || '');
+          setRAM(prod.ram || '');
+          setScreen(prod.manHinh || '');
+          setPIN(prod.pin || '');
+          setOS(prod.heDieuHanh || '');
+          setWeight(prod.khoiLuong || '');
+          setGPU(prod.cardDoHoa || '');
+          setKeyboard(prod.banPhim || '');
+          setColor(prod.mauSac || '');
+          setDemand(prod.nhuCau || '');
+          setStorage(prod.luuTru || '');
+          setAccessory(prod.phuKien || '');
+          setConnect(prod.kieuKetNoi || '');
+          setDateUpdate(prod.dateUpdate || '');
+          setHot(prod.hot || '');
+        }
+      }, [prod]);
 
     useEffect(() => {
         if(detail.type === 'lap' || detail.type === 'pc') {
@@ -47,6 +77,8 @@ function detailUpdate() {
             fetchData();
         }
     },[])
+
+    const navigate = useNavigate();
 
     const handleUpdate = async (id) => {
         try {
@@ -89,25 +121,14 @@ function detailUpdate() {
             progress: undefined,
             theme: "dark",
             });
+            setTimeout(() => {
+                navigate('../admin')
+            }, 3000);
         } catch (error) {
           // Xử lý lỗi
           console.error("Error updating product:", error);
         }
       };      
-    
-    const handleDelete = () => {
-
-        toast.success('Thành công', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            });
-    }
 
     return (
         <>
@@ -176,7 +197,6 @@ function detailUpdate() {
                             </div>
                             <div className="col-12 detailUpdateBtn">
                                 <button className='btn btn-success' onClick={() => handleUpdate(prod.productID)}>Cập nhật</button>
-                                <button className='btn btn-warning mx-2' onClick={() => handleDelete()} >Xóa</button>
                                 <button className='btn btn-primary'>Trở về</button>
                             </div>
                         </div>
