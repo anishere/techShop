@@ -118,10 +118,10 @@ function shop() {
             <div className="container-xxl">
                 <div className="row">
                     <h5>Nhãn hàng:</h5>
-                    <button onClick={() => BrandAll()} className="buttonBrand col-1 mx-2 btn">Tất cả</button>
+                    <button onClick={() => BrandAll()} className="buttonBrand col-7 col-md-1 mx-auto my-md-0 my-2 mx-md-2 btn">Tất cả</button>
                     {listBrands && listBrands.map((brand) => {
                         return (
-                            <button key={brand} onClick={() => handleBrand(brand)} className="buttonBrand col-1 mx-2 btn">{brand}</button>
+                            <button key={brand} onClick={() => handleBrand(brand)} className="buttonBrand mx-auto col-7 my-md-0 my-2 col-md-1 mx-md-2 btn">{brand}</button>
                         )})
                     }
                     <hr />
