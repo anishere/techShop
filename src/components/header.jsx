@@ -1,19 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { HiOutlineMail } from 'react-icons/hi'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsBag } from 'react-icons/bs'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { FaPhoneAlt } from 'react-icons/fa'
 // import { VscAccount } from 'react-icons/vsc'
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { searchProd } from '../redux/searchSlice';
 
 function header() {
     const location = useLocation()
 
     const [logo, setLogo] = useState()
     const [phone, setPhone] = useState()
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,6 +39,22 @@ function header() {
     //check auth
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    //Search
+    const navigate = useNavigate()
+    const [search, setSearch] = useState()
+
+    const listenSearch = (e) => {
+        if (e.keyCode === 13) {
+            dispatch(searchProd(e.target.value))
+            navigate('prodWithSearch')
+        }
+    }
+
+    const handleSearch = () => {
+        dispatch(searchProd(search))
+        navigate('prodWithSearch')
+    }
 
     return (
         <>
@@ -75,6 +94,10 @@ function header() {
                             </li>}
                         </ul>
                     </nav>
+                    <div className="d-flex" >
+                        <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Search"/>
+                        <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type="">Search</button>
+                    </div>
                 </div>
                 <div className="nav-links-nav col-md-3 d-md-flex align-items-center justify-content-end">
                         {/* <Link to={'login'} className='mx-md-2 d-flex'>  <VscAccount className='fs-md-3 fs-2 mx-2 mx-md-2'/>

@@ -62,3 +62,6 @@ export const URLorder = 'Information/AddInformation'
 
 //Add feedback
 export const URLaddFeedBack = 'Message/AddMess'
+
+//Search
+export const URLsearch = 'ProductsPCLap/SearchProducts?keyword='
