@@ -9,6 +9,7 @@ import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchProd } from '../redux/searchSlice';
+import { IoSearch } from "react-icons/io5";
 
 function header() {
     const location = useLocation()
@@ -95,8 +96,8 @@ function header() {
                         </ul>
                     </nav>
                     <div className="d-flex" >
-                        <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Search"/>
-                        <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type="">Search</button>
+                        <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Tìm kiếm"/>
+                        <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type=""><IoSearch /></button>
                     </div>
                 </div>
                 <div className="nav-links-nav col-md-3 d-md-flex align-items-center justify-content-end">
@@ -106,7 +107,6 @@ function header() {
                         <Link to={'cart'} className='sec-cart position-relative ms-3 ms-md-0 mx-md-2 d-flex'>
                             <BsBag className='fs-3 mx-2 mx-md-2 mb-md-2'/>
                             {totalItems > 0 && <p className='text-center totalItems'>{totalItems}</p>}
-                            <p>Cart</p>
                         </Link>
                 </div>
             </div>

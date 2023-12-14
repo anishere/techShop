@@ -110,8 +110,9 @@ function cart() {
         </>)
     } else {
         return (<>
-            <div className="empty d-flex">
-                <span className="fs-4">Your Cart Is Empty !!!</span>
+            <div className="empty text-center d-flex flex-wrap">
+                <p className="fs-4 col-12">Giỏ hàng bạn đang rỗng !!!</p>
+                <Link className="btn btn-success" to={'../shop'}>Tiếp tục mua sắm</Link>    
             </div>
         </>);
     }

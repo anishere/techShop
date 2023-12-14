@@ -231,9 +231,19 @@ function admin() {
     }
     //two way info
     const [SDTshop, setSDTshop] = useState();
-    const [addressShop, setAdressShop] = useState();
+    const [addressShop, setAddressShop] = useState();
     const [logoShop, setLogoShop] = useState();
     const [mapShop, setMapShop] = useState();
+    useEffect(() => {
+        // Kiểm tra xem prod có tồn tại không
+        if (listRes && type === 'infoShop') {
+            const prod = listRes[0];
+            setSDTshop(prod.sdt || '');
+            setAddressShop(prod.address || '');
+            setLogoShop(prod.logo || '');
+            setMapShop(prod.map || '');
+        }
+      }, [listRes]);
 
     //modal aboutShop
     const [showAbout, setShowAbout] = useState(false);
@@ -266,6 +276,14 @@ function admin() {
     //two way About
     const [about1, setAbout1] = useState()
     const [about2, setAbout2] = useState()
+    useEffect(() => {
+        // Kiểm tra xem prod có tồn tại không
+        if (listRes && type === "about") {
+            const prod = listRes[0];
+            setAbout1(prod.about1 || '');
+            setAbout2(prod.about2 || '');
+        }
+      }, [listRes]);
 
     //Order
     const handleDeleteOrder = async (id) => {
@@ -445,7 +463,6 @@ function admin() {
                             <th>Mã SP</th>
                             <th>Tên SP</th>
                             <th>Brand</th>
-                            <th>Mô tả</th>
                             <th>Giảm giá</th>
                             <th>Giá</th>
                             <th>Bảo hành</th>
@@ -509,7 +526,7 @@ function admin() {
                                                 <p>SDT: {item.sdt}</p>
                                                 <input type="text" value={SDTshop} onChange={(e) => setSDTshop(e.target.value)} />
                                                 <p>Địa chỉ: {item.address}</p>
-                                                <input type="text" value={addressShop} onChange={(e) => setAdressShop(e.target.value)} />
+                                                <input type="text" value={addressShop} onChange={(e) => setAddressShop(e.target.value)} />
                                                 <p>Logo: {item.logo}</p>
                                                 <input type="text" value={logoShop} onChange={(e) => setLogoShop(e.target.value)} />
                                                 <p>Map: {item.map}</p>
@@ -552,9 +569,9 @@ function admin() {
                                             <div className="col-12 d-flex flex-column justify-content-between mx-auto pe-0">
                                                 <div className="detailUpdate card p-4 col-md-12">
                                                 <p>Giới thiệu 1: {item.about1}</p>
-                                                <input type="text" value={about1} onChange={(e) => setAbout1(e.target.value)} />
+                                                <textarea type="text" value={about1} onChange={(e) => setAbout1(e.target.value)} />
                                                 <p>Giới thiệu 2: {item.about2}</p>
-                                                <input type="text" value={about2} onChange={(e) => setAbout2(e.target.value)} />
+                                                <textarea type="text" value={about2} onChange={(e) => setAbout2(e.target.value)} />
                                                 </div>
                                             </div>
                                         </div>
@@ -595,7 +612,6 @@ function admin() {
                                     <td><p>{item.productID}</p></td>
                                     <td><p>{item.productName}</p></td>
                                     <td><p>{item.brand}</p></td>
-                                    <td><p>{item.description}</p></td>
                                     <td><p>{item.discount}</p></td>
                                     <td><p>{item.price}</p></td>
                                     <td><p>{item.baoHanh}</p></td>

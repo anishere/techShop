@@ -123,7 +123,7 @@ function detailUpdate() {
             });
             setTimeout(() => {
                 navigate('../admin')
-            }, 3000);
+            }, 1000);
         } catch (error) {
           // Xử lý lỗi
           console.error("Error updating product:", error);
