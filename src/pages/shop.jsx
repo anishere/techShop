@@ -16,7 +16,7 @@ function shop() {
     const [totalProds, setTotalProds] = useState()
     const totalPages = Math.ceil((totalProds / 20))
 
-    const [selected, setSelected] = useState(true)
+    //const [selected, setSelected] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,10 +77,16 @@ function shop() {
     }
 
     const handleBrand = (brand) => {
-        handleSelectPage(0)
-        setBrandProds(brand)
+        if (brand === "all") {
+            BrandAll();
+        }
+        else 
+        {
+            handleSelectPage(0)
+            setBrandProds(brand)
 
-        setSelected(!selected)
+            // setSelected(!selected)
+        }
     }
 
     const scrollToTop = () => {
@@ -117,13 +123,16 @@ function shop() {
         <section className="category-shop">
             <div className="container-xxl">
                 <div className="row">
-                    <h5>Nhãn hàng:</h5>
-                    <button onClick={() => BrandAll()} className="buttonBrand col-7 col-md-1 mx-auto my-md-0 my-2 mx-md-2 btn">Tất cả</button>
-                    {listBrands && listBrands.map((brand) => {
-                        return (
-                            <button key={brand} onClick={() => handleBrand(brand)} className="buttonBrand mx-auto col-7 my-md-0 my-2 col-md-1 mx-md-2 btn">{brand}</button>
-                        )})
-                    }
+                    <h5 className="">Lọc:</h5>
+                    <div className="category-shop-opLap">
+                    <h6 className="my-0 me-2">Hãng: </h6>
+                    <select onChange={(e) => handleBrand(e.target.value)} className="form-select">
+                        <option value="all">Tất cả</option>
+                        {listBrands && listBrands.map((brand) => (
+                            <option key={brand} value={brand}>{brand}</option>
+                        ))}
+                    </select>
+                    </div>
                     <hr />
                 </div>
             </div>
@@ -173,7 +182,7 @@ function shop() {
         {totalPages > 1 &&
             <div className='d-flex justify-content-center mb-3'>
             <ReactPaginate
-            key={selected}
+            // key={selected}
             nextLabel=">"
             onPageChange={(e) => {handleSelectPage(e)}}
             pageRangeDisplayed={3}

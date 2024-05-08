@@ -30,19 +30,26 @@ function payment() {
                 name: name,
                 address: address,
                 listCart: JSON.stringify(listcart),
-                totalPrice: totalPrice
+                totalPrice: totalPrice,
+                status: 'Đang xử lí',
             });
-        
+            
             // Xử lý dữ liệu trả về nếu cần thiết
             console.log(response.statusCode);
-            alert('Đặt hàng thành công shop sẽ liên hệ với bạn để xác nhận sớm nhất')
-            window.location.reload(); 
-            window.location.href = '/';
-          } catch (error) {
+            if (response.statusCode === 200) {
+                alert('Đặt hàng thành công. Shop sẽ liên hệ với bạn để xác nhận sớm nhất.');
+                window.location.reload();
+                window.location.href = '/';
+            } else {
+                console.error("Error updating product:", response.data);
+                // Xử lý lỗi nếu cần thiết
+            }
+        } catch (error) {
             // Xử lý lỗi
             console.error("Error updating product:", error);
-          }
+        }
     }
+    
 
     return (
         <div className="container-xxl p-4">

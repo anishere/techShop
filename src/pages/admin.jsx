@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
 import { URLLap, URLaddProd, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
-import { infoShop, about, infoCustomer, feedBack } from '.././URL/url';
+import { infoShop, about, allOrders, feedBack } from '.././URL/url';
 import ReactPaginate from 'react-paginate';
 import { UpInfoProd } from '../redux/detailSlice';
 import { useDispatch } from 'react-redux';
@@ -64,9 +64,9 @@ function admin() {
                     setListRes(res.about)
                     setTotalProds(0)
                 }    
-                else if (type === 'infoCustomer')
+                else if (type === 'allOrders')
                 {
-                    setListRes(res.listcustomers)
+                    setListRes(res.listorders)
                     setTotalProds(0)
                 }    
                 else if (type === 'feedback')
@@ -373,7 +373,7 @@ function admin() {
         <div className="admin-button mb-5">
                 <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(infoShop, 'infoShop')}>Thông tin shop</button>
                 <button className='btn btn-primary' onClick={() => handleSelectURL(about,'about')}>Trang giới thiệu</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(infoCustomer,'infoCustomer')}>Thông tin đặt hàng</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(allOrders,'allOrders')}>Thông tin đặt hàng</button>
                 <button className='btn btn-primary' onClick={() => handleSelectURL(feedBack,'feedback')}>FeedBack</button>
                 <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLLap,'lap')}>Sản phẩm LapTop</button>
         </div>
@@ -438,13 +438,14 @@ function admin() {
                             <th>Chỉnh sửa</th>
                             </>
                         }
-                        { type === 'infoCustomer' &&
+                        { type === 'allOrders' &&
                             <>
                             <th>SĐT</th>
                             <th>Tên</th>
                             <th>Địa chỉ</th>
                             <th>Đơn hàng</th>
                             <th>Tổng tiền</th>
+                            <th>Trãng thái</th>
                             <th>Xóa</th>
                             </>
                         }
@@ -587,13 +588,14 @@ function admin() {
                                     </Modal>
                                     </>
                                 }
-                                { type === 'infoCustomer' &&
+                                { type === 'allOrders' &&
                                     <>
                                     <td><p>{item.phoneNumber}</p></td>
                                     <td><p>{item.name}</p></td>
                                     <td><p>{item.address}</p></td>
                                     <td><p>{item.listCart}</p></td>
                                     <td><p>{formatNumber(item.totalPrice)}</p></td>
+                                    <td><p>{item.status}</p></td>
                                     <td><button onClick={() => handleDeleteOrder(item.id)} className='btn btn-danger'>Xóa</button></td>
                                     </>
                                 }

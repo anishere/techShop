@@ -1,6 +1,6 @@
 export const infoShop = 'InfoShop/GetInfoShop'
 export const about = 'About/GetAbout'
-export const infoCustomer = 'Information/InformationList'
+export const allOrders = 'Order/GetAllOrders'
 
 export const feedBack = 'Message/ListMess?page=1&pageSize=20'
 
@@ -43,7 +43,7 @@ export const URLupdateAbout = 'About/UpdateAbout'
 export const URLgetAbout = 'About/GetAbout'
 
 //Delete Order
-export const URLdeleteOrder = 'Information/DeleteInformationById/'
+export const URLdeleteOrder = 'Order/DeleteOrder/'
 
 //Delete Feedback
 export const URLdeleteFeedback = 'Message/DeleteMess/'
@@ -58,7 +58,7 @@ export const URLchangePass = 'Account/update?newPassword='
 export const URLgetALL = 'ProductsPCLap/GetAllProducts'
 
 //Order
-export const URLorder = 'Information/AddInformation'
+export const URLorder = 'Order/AddOrder'
 
 //Add feedback
 export const URLaddFeedBack = 'Message/AddMess'

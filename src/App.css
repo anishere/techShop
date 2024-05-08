@@ -606,6 +606,22 @@ a.page-link {
   border-radius: 3px;
 }
 
+.category-shop-opLap {
+  width: 14%;
+  display: flex;
+}
+
+.category-shop-opLap h6 {
+  align-content: center;
+}
+
+.category-shop-opLap option {
+  color: black;
+}
+
+.category-shop-opLap:hover {
+}
+
 /* Shop end */
 
 /* Admin start */
