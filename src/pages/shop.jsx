@@ -1,14 +1,23 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import { axiosCus } from "../axios/axios";
-import { URLLap, URLtotalProd, URLtotalProdBrand } from "../URL/url";
+import { URLLap, URLtotalProd, URLtotalProdBrand, URLCPU, URLKeyBoard, URLMouse, URLRAM, URLTaiNghe } from "../URL/url";
+import { URLBrandsLap, URLBrandsCPU, URLBrandsRAM, URLBrandsHeadPhone, URLBrandsKeyBoard, URLBrandsMouse } from "../URL/url";
 import { useDispatch, useSelector } from "react-redux";
 import { UpInfoProd, addItem } from "../redux/detailSlice";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 
+import claptop from "../assets/imgs/categoryProd/claptop.webp";
+import ccpu from "../assets/imgs/categoryProd/ccpu.webp";
+import cmouse from "../assets/imgs/categoryProd/cmouse.webp";
+import ckeyboard from "../assets/imgs/categoryProd/ckeyboard.webp";
+import cheadphone from "../assets/imgs/categoryProd/cheadphone.webp";
+import cram from "../assets/imgs/categoryProd/cram.webp"
+
 function shop() {
     const dispatch = useDispatch()
+    const [prodsType, setProdsType] = useState("laptop");
     const [listProds, setListProds] = useState();
     const [brandProds, setBrandProds] = useState('ALL');
     const [listBrands, setListBrands] = useState();
@@ -20,50 +29,87 @@ function shop() {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                if(brandProds === 'ALL') {
-                    const res = await axiosCus.get(URLLap);
-                    const resBrand = await axiosCus.get('ProductsPCLap/GetBrands')
-                    setListProds(res.listproducts)
+            if(prodsType === "laptop") {
+                try {
+                    if(brandProds === 'ALL') {
+                        const res = await axiosCus.get(URLLap);   
+                        setListProds(res.listproducts)
+                        const resBrand = await axiosCus.get(URLBrandsLap)
+                        setListBrands(resBrand.brands)
+                        const restotal = await axiosCus.get(URLtotalProd);
+                        setTotalProds(restotal.totalCount);
+                    } else {
+                        const res = await axiosCus.get(`ProductsPCLap/GetLaptopsBrand?page=1&pageSize=20&brand=${brandProds}`);
+                        setListProds(res.listproducts)
+                        const restotal = await axiosCus.get(`${URLtotalProdBrand}${brandProds}`);
+                        setTotalProds(restotal.brandProductCount);
+                    } 
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            } else if (prodsType === 'cpu') {
+                try{
+                    const res = await axiosCus.get(URLCPU);
+                    setListProds(res.listcpu)
+                    const resBrand = await axiosCus.get(URLBrandsCPU)
                     setListBrands(resBrand.brands)
-                } else {
-                    const res = await axiosCus.get(`ProductsPCLap/GetLaptopsBrand?page=1&pageSize=20&brand=${brandProds}`);
-                    setListProds(res.listproducts)
+                } catch (error) {
+                    console.error('Error fetching data:', error);
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
+            } else if (prodsType === 'keyboard') {
+                try{
+                    const res = await axiosCus.get(URLKeyBoard);
+                    setListProds(res.listKeyBoard)
+                    const resBrand = await axiosCus.get(URLBrandsKeyBoard)
+                    setListBrands(resBrand.brands)
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            } else if (prodsType === 'mouse') {
+                try{
+                    const res = await axiosCus.get(URLMouse);
+                    setListProds(res.listMouse)
+                    const resBrand = await axiosCus.get(URLBrandsMouse)
+                    setListBrands(resBrand.brands)
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            } else if (prodsType === 'ram') {
+                try{
+                    const res = await axiosCus.get(URLRAM);
+                    setListProds(res.listram)
+                    const resBrand = await axiosCus.get(URLBrandsRAM)
+                    setListBrands(resBrand.brands)
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            } else if (prodsType === 'headphone') {
+                try{
+                    const res = await axiosCus.get(URLTaiNghe);
+                    setListProds(res.listTaiNghe)
+                    const resBrand = await axiosCus.get(URLBrandsHeadPhone)
+                    setListBrands(resBrand.brands)
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
             }
         };
         fetchData();
-    }, [brandProds])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                if(brandProds === 'ALL') {
-                    const res = await axiosCus.get(URLtotalProd);
-                    setTotalProds(res.totalCount);
-                } else {
-                    const res = await axiosCus.get(`${URLtotalProdBrand}${brandProds}`);
-                    setTotalProds(res.brandProductCount);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchData();
-    }, [brandProds])
+    }, [brandProds, prodsType]);
 
     const handleSelectPage = (e) => {
         const fetchData = async () => {
             try {
-                if(brandProds === 'ALL') {
-                    const res = await axiosCus.get(`ProductsPCLap/GetLaptops?page=${e.selected+1}&pageSize=20`);
-                    setListProds(res.listproducts)
-                } else {
-                    const res = await axiosCus.get(`ProductsPCLap/GetLaptopsBrand?page=${e.selected+1}&pageSize=20&brand=${brandProds}`);
-                    setListProds(res.listproducts)
+                if(prodsType === 'laptop') {
+                    if(brandProds === 'ALL') {
+                        const res = await axiosCus.get(`ProductsPCLap/GetLaptops?page=${e.selected+1}&pageSize=20`);
+                        setListProds(res.listproducts)
+                    } else {
+                        const res = await axiosCus.get(`ProductsPCLap/GetLaptopsBrand?page=${e.selected+1}&pageSize=20&brand=${brandProds}`);
+                        setListProds(res.listproducts)
+                    }
                 }
+                
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -104,10 +150,11 @@ function shop() {
     //buy
     const ids = useSelector(state => state.prod.ids)
 
-    const handleAddItem = (id) => {
-        dispatch(addItem(id))
+    const handleAddItem = (id, type) => {
+        dispatch(addItem({productId: id, prodsType: type}))
     }
- 
+
+
     return (<>
         <section className="banner-shop">
             <div className="container-xxl">
@@ -123,6 +170,65 @@ function shop() {
         <section className="category-shop">
             <div className="container-xxl">
                 <div className="row">
+                    <div className="px-0">
+                        <h5>Danh mục</h5>
+                        <div className="category-shop-container d-flex justify-content-around">
+                            <div onClick={() => {
+                                setProdsType("laptop")
+                                setBrandProds("ALL")
+                            }}>
+                                <a >
+                                    <div><img src={claptop} alt="" className="category-shop-imgs" /></div>
+                                    <div className="category-shop-subtitle">Laptop</div>
+                                </a>
+                            </div>
+                            <div onClick={() => {
+                                setProdsType("cpu")
+                                setBrandProds("ALL")
+                            }}>
+                                <a >
+                                    <div><img src={ccpu} alt="" className="category-shop-imgs" /></div>
+                                    <div className="category-shop-subtitle">CPU</div>
+                                </a>
+                            </div>
+                            <div onClick={() => {
+                                setProdsType("keyboard")
+                                setBrandProds("ALL")
+                            }}>
+                                <a >
+                                    <div><img src={ckeyboard} alt="" className="category-shop-imgs" /></div>
+                                    <div className="category-shop-subtitle">Bàn Phím</div>
+                                </a>
+                            </div>
+                            <div onClick={() => {
+                                setProdsType("mouse")
+                                setBrandProds("ALL")
+                            }}>
+                                <a >
+                                    <div><img src={cmouse} alt="" className="category-shop-imgs" /></div>
+                                    <div className="category-shop-subtitle">Chuột</div>
+                                </a>
+                            </div>
+                            <div onClick={() => {
+                                setProdsType("ram");
+                                setBrandProds("ALL");
+                            }}>
+                                <a >
+                                    <div><img src={cram} alt="" className="category-shop-imgs" /></div>
+                                    <div className="category-shop-subtitle">RAM</div>
+                                </a>
+                            </div>
+                            <div onClick={() => {
+                                setProdsType("headphone");
+                                setBrandProds("ALL");
+                            }}>
+                                <a >
+                                    <div><img src={cheadphone} alt="" className="category-shop-imgs" /></div>
+                                    <div className="category-shop-subtitle">Tai Nghe</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <h5 className="">Lọc:</h5>
                     <div className="category-shop-opLap">
                     <h6 className="my-0 me-2">Hãng: </h6>
@@ -151,14 +257,13 @@ function shop() {
                             <h6>{prod.brand}</h6>
                             <Link to={'../detail'} className="text-white" onClick={() => handleSelectProd(prod.productID, prod.type)}><h6 className="card-title">{prod.productName}</h6></Link>
                             <p className="card-text mb-1 newProds-price">{(prod.price - (prod.price * prod.discount)).toLocaleString('vi-VN')}đ <span className="newProds-priceOld"><strike>{prod.price.toLocaleString('vi-VN')}đ</strike></span></p>
-                            <Link onClick={() => {handleAddItem(prod.productID)}} href="" className="btn my-2">Mua ngay
-                            { ids[prod.productID] > 0 && <span>&nbsp;({ids[prod.productID]})</span>}
+                            <Link onClick={() => {handleAddItem(prod.productID, prod.type)}} className="btn my-2">Mua ngay
+                            { ids && ids[prod.type][prod.productID] > 0 && <span>&nbsp;({ids[prod.type][prod.productID]})</span>}
                             </Link>
                         </div>
                     </div>
                     )
-                } else if (prod.brand === brandProds) {
-                    
+                } else if (prod.brand && prod.brand === brandProds) {                  
                     return (
                         <div key={prod.productID} className="card col-md-3 col-10 mx-auto my-2 newProds-item">
                             <div className="mt-3 newProds-img">
@@ -168,8 +273,8 @@ function shop() {
                                 <h6>{prod.brand}</h6>
                                 <Link to={'../detail'} className="text-white" onClick={() => handleSelectProd(prod.productID, prod.type)}><h6 className="card-title">{prod.productName}</h6></Link>
                                 <p className="card-text mb-1 newProds-price">{(prod.price - (prod.price * prod.discount)).toLocaleString('vi-VN')}đ <span className="newProds-priceOld"><strike>{prod.price.toLocaleString('vi-VN')}đ</strike></span></p>
-                                <Link onClick={() => {handleAddItem(prod.productID)}} href="" className="btn my-2">Mua ngay
-                                { ids[prod.productID] > 0 && <span>&nbsp;({ids[prod.productID]})</span>}
+                                <Link onClick={() => {handleAddItem(prod.productID, prod.type)}} href="" className="btn my-2">Mua ngay
+                                { ids && ids[prod.type][prod.productID] > 0 && <span>&nbsp;({ids[prod.type][prod.productID]})</span>}
                                 </Link>
                             </div>
                         </div>

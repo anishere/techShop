@@ -4,6 +4,14 @@ export const allOrders = 'Order/GetAllOrders'
 
 export const feedBack = 'Message/ListMess?page=1&pageSize=20'
 
+//Get all prod
+export const URLgetALL = 'ProductsPCLap/GetAllProducts'
+export const URLgetAllCPU = 'ProductsCPU/GetAllProducts'
+export const URLgetAllKeyBoard = 'ProductsKeyBoard/GetAllKeyboards'
+export const URLgetAllRAM = 'ProductsRAM/GetAllRAM'
+export const URLgetAllMouse = 'ProductsMouse/GetAllMouse'
+export const URLgetAllHeadPhone = 'ProductsTaiNghe/GetAllTaiNghe'
+
 export const URLLap = 'ProductsPCLap/GetLaptops?page=1&pageSize=20'
 export const URLPC = 'ProductsPCLap/GetPCs?page=1&pageSize=20'
 export const URLCPU = 'ProductsCPU/ListCPU?page=1&pageSize=20'
@@ -17,7 +25,7 @@ export const URLIDRAM = 'ProductsRAM/GetRAMById/'
 export const URLIDTaiNghe = 'ProductsTaiNghe/GetTaiNgheById/'
 export const URLIDMouse = 'ProductsMouse/GetMouseById/'
 export const URLIDKeyBoard = 'ProductsKeyBoard/GetKeyBoardById/'
-export const URLIDCPU = 'api/ProductsCPU/GetCPUById/3'
+export const URLIDCPU = 'ProductsCPU/GetCPUById/'
 
 // New products
 
@@ -54,9 +62,6 @@ export const URLlogin = 'Account/login/'
 //Change Password
 export const URLchangePass = 'Account/update?newPassword='
 
-//Get all prod
-export const URLgetALL = 'ProductsPCLap/GetAllProducts'
-
 //Order
 export const URLorder = 'Order/AddOrder'
 
@@ -65,3 +70,11 @@ export const URLaddFeedBack = 'Message/AddMess'
 
 //Search
 export const URLsearch = 'ProductsPCLap/SearchProducts?keyword='
+
+//Get all brands
+export const URLBrandsLap = 'ProductsPCLap/GetBrands'
+export const URLBrandsCPU = 'ProductsCPU/GetAllBrands'
+export const URLBrandsRAM = 'ProductsRAM/GetAllRAMBrands'
+export const URLBrandsKeyBoard = 'ProductsKeyBoard/GetAllKeyboardBrands'
+export const URLBrandsMouse = 'ProductsMouse/GetAllMouseBrands'
+export const URLBrandsHeadPhone = 'ProductsTaiNghe/GetAllTaiNgheBrands'

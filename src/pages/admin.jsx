@@ -97,7 +97,7 @@ function admin() {
 
     //model Add Prod
     const [show, setShow] = useState(false);
-    // two ways for input
+    // two ways for input update
     const [name, setName] = useState()
     const [brand, setBrand] = useState()
     const [des, setDes] = useState()
@@ -105,6 +105,9 @@ function admin() {
     const [price, setPrice] = useState()
     const [warranty, setWarranty] = useState()
     const [image, setImage] = useState()
+    const [image2, setImage2] = useState()
+    const [image3, setImage3] = useState()
+    const [image4, setImage4] = useState()
     const [typeAdd, setTypeAdd] = useState()
     const [CPU, setCPU] = useState()
     const [RAM, setRAM] = useState()
@@ -133,6 +136,9 @@ function admin() {
             discount: discount,
             price: price,
             image: image,
+            image2: image2,
+            image3: image3,
+            image4: image4,
             type: type,
             baoHanh: warranty,
             cpu: CPU,
@@ -367,7 +373,8 @@ function admin() {
     }
 
     const formatNumber = (number) => parseFloat(number).toLocaleString('vi-VN');
-
+    
+    console.log(listRes)
     return (<>
         <div className="container-xxl mb-5">
         <div className="admin-button mb-5">
@@ -468,6 +475,9 @@ function admin() {
                             <th>Giá</th>
                             <th>Bảo hành</th>
                             <th>Ảnh</th>
+                            <th>Ảnh 2</th>
+                            <th>Ảnh 3</th>
+                            <th>Ảnh 4</th>
                             <th>Loại</th>
                             { (type === 'lap') &&
                                 //Cột của LapPC
@@ -617,7 +627,10 @@ function admin() {
                                     <td><p>{item.discount}</p></td>
                                     <td><p>{item.price}</p></td>
                                     <td><p>{item.baoHanh}</p></td>
-                                    <td><img src={item.image} alt="" className='' height={'60px'} /></td>
+                                    <td><img src={item.image} alt="1" className='' height={'60px'} /></td>
+                                    <td><img src={item.image2} alt="2" className='' height={'60px'} /></td>
+                                    <td><img src={item.image3} alt="3" className='' height={'60px'} /></td>
+                                    <td><img src={item.image4} alt="4" className='' height={'60px'} /></td>
                                     <td><p>{item.type}</p></td>
                                     {(item.type === 'lap') &&
                                         // lap 
@@ -721,7 +734,7 @@ function admin() {
                             <input type="text" value={accessory} onChange={(e) => setAccessory(e.target.value)} />
                             <p>Kiểu kết nối:</p>
                             <input type="text" value={connect} onChange={(e) => setConnect(e.target.value)} />
-                            <p>Ngày cập nhật (năm/tháng/ngày) : </p>
+                            <p>Ngày cập nhật (năm-tháng-ngày) (2024-01-13) : </p>
                             <input type="text" value={dateUpdate} onChange={(e) => setDateUpdate(e.target.value)} />
                             <p>Sản phẩm có hot không: </p>
                             <input type="text" value={hot} onChange={(e) => setHot(e.target.value)} />
@@ -729,6 +742,12 @@ function admin() {
                             <input type="text" value={typeAdd} onChange={(e) => setTypeAdd(e.target.value)} />
                             <p>Link ảnh:</p>
                             <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+                            <p>Link ảnh 2:</p>
+                            <input type="text" value={image2} onChange={(e) => setImage2(e.target.value)} />
+                            <p>Link ảnh 3:</p>
+                            <input type="text" value={image3} onChange={(e) => setImage3(e.target.value)} />
+                            <p>Link ảnh 4:</p>
+                            <input type="text" value={image4} onChange={(e) => setImage4(e.target.value)} />
                             <p>Mô tả sản phẩm:</p>
                             <textarea className='col-12' type="text" value={des} onChange={(e) => setDes(e.target.value)} />
                         </div>

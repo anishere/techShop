@@ -1,17 +1,21 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useDispatch, useSelector } from 'react-redux'
-import { URLIDLapPC, URLhotProds } from '../URL/url';
+import { URLIDLapPC, URLhotProds, URLIDCPU, URLIDKeyBoard, URLIDMouse, URLIDRAM, URLIDTaiNghe } from '../URL/url';
 import { axiosCus } from '../axios/axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FaShippingFast } from "react-icons/fa";
 import { AiOutlineFileProtect } from "react-icons/ai";
 import { addItem, editQuantity, reduceItem } from '../redux/detailSlice';
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 function detail() {
     const ids = useSelector(state => state.prod.ids)
     const [hotProds, setHotProds] = useState()
     const [prod, setProd] = useState()
-    const detail = useSelector((state) => state.prod)
+    const detail = useSelector((state) => state.prod)  
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,17 +30,32 @@ function detail() {
     }, [])
 
     useEffect(() => {
-        if(detail.type === 'lap' || detail.type === 'pc') {
-            const fetchData = async () => {
+            const fetchData = async () => {           
                 try {
-                    const res = await axiosCus.get(`${URLIDLapPC}${detail.id}`);
-                    setProd(res.listproducts[0])
+                    if(detail.type === 'lap' || detail.type === 'pc') {
+                        const res = await axiosCus.get(`${URLIDLapPC}${detail.id}`);
+                        setProd(res.listproducts[0])
+                    } else if (detail.type === 'cpu') {
+                        const res = await axiosCus.get(`${URLIDCPU}${detail.id}`);
+                        setProd(res.listcpu[0])
+                    } else if (detail.type === 'keyboard') {
+                        const res = await axiosCus.get(`${URLIDKeyBoard}${detail.id}`);
+                        setProd(res.listKeyBoard[0])
+                    } else if (detail.type === 'mouse') {
+                        const res = await axiosCus.get(`${URLIDMouse}${detail.id}`);
+                        setProd(res.listMouse[0])
+                    } else if (detail.type === 'ram') {
+                        const res = await axiosCus.get(`${URLIDRAM}${detail.id}`);
+                        setProd(res.listram[0])
+                    } else if (detail.type === 'headphone') {
+                        const res = await axiosCus.get(`${URLIDTaiNghe}${detail.id}`);
+                        setProd(res.listTaiNghe[0])
+                    }
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
             }
             fetchData();
-        }
     },[])
 
     const dispatch = useDispatch();
@@ -48,14 +67,65 @@ function detail() {
     }
     const handleReduce = id => dispatch(reduceItem(id))
 
+    // slider
+    console.log(prod)
+    const [nav1, setNav1] = useState(null);
+    const [nav2, setNav2] = useState(null);
+    let sliderRef1 = useRef(null);
+    let sliderRef2 = useRef(null);
+
+    useEffect(() => {
+        if(sliderRef1.current && sliderRef2.current) {
+            setNav1(sliderRef1.current);
+            setNav2(sliderRef2.current);
+        }
+        }, [sliderRef1.current, sliderRef2.current]);
+
     return (
         <>
-
         {prod && <div className="detail mt-5">
             <div className="container-xxl">
                 <div className="row">
-                    <div className="img-product col-11 mx-auto col-md-6 card p-2 p-md-5">
-                        <img src={prod.image} className="img-fluid" alt="" />
+                    <div className="img-product col-11 mx-auto col-md-6 card p-2">
+                        <div>
+                        <Slider asNavFor={nav2} ref={slider => (sliderRef1.current = slider)}>
+                            <div>
+                                <img src={prod.image} className="img-fluid" alt="1" />
+                            </div>
+                            <div>
+                                <img src={prod.image2} className="img-fluid" alt="2" />
+                            </div>
+                            <div>
+                                <img src={prod.image3} className="img-fluid" alt="3" />
+                            </div>
+                            <div>
+                                <img src={prod.image4} className="img-fluid" alt="4" />
+                            </div>
+                        </Slider>
+                        </div>
+                        <div>
+                        <Slider
+                            asNavFor={nav1}
+                            ref={slider => (sliderRef2.current = slider)}
+                            slidesToShow={3}
+                            swipeToSlide={true}
+                            focusOnSelect={true}
+                        >
+                            <div>
+                                <img src={prod.image} className="img-fluid" alt="1" />
+                            </div>
+                            <div>
+                                <img src={prod.image2} className="img-fluid" alt="2" />
+                            </div>
+                            <div>
+                                <img src={prod.image3} className="img-fluid" alt="3" />
+                            </div>
+                            <div>
+                                <img src={prod.image4} className="img-fluid" alt="4" />
+                            </div>
+                        </Slider>
+                        </div>
+                        {/* <img src={prod.image} className="img-fluid" alt="" /> */}
                     </div>
                     <div className="col-md-6 d-flex flex-column justify-content-between mx-auto pe-0">
                         <div className="detail-text card p-4 col-md-12">

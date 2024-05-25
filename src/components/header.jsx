@@ -34,8 +34,12 @@ function header() {
 
     //total items
     const ids = useSelector(state => state.prod.ids) //Obj
-    const values = Object.values(ids); //Lay tat gia tri tu obj ids value[]
-    const totalItems = values.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    const totalItems = Object.keys(ids).reduce((accumulator, productType) => {
+        const productCounts = Object.values(ids[productType]);
+        return accumulator + productCounts.reduce((sum, count) => sum + count, 0);
+      }, 0);
+    // const values = Object.values(ids); //Lay tat gia tri tu obj ids value[]
+    // const totalItems = values.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     //check auth
     const isAuth = useSelector((state) => state.auth.isAuthenticated)

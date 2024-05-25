@@ -4,7 +4,7 @@ import { URLIDLapPC, URLupdateProd } from '../URL/url';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function detailUpdate() {
     const [prod, setProd] = useState()
@@ -18,6 +18,9 @@ function detailUpdate() {
     const [price, setPrice] = useState('');
     const [warranty, setWarranty] = useState('');
     const [image, setImage] = useState('');
+    const [image2, setImage2] = useState('');
+    const [image3, setImage3] = useState('');
+    const [image4, setImage4] = useState('');
     const [type, setType] = useState('');
     const [CPU, setCPU] = useState('');
     const [RAM, setRAM] = useState('');
@@ -45,6 +48,9 @@ function detailUpdate() {
           setPrice(prod.price || '');
           setWarranty(prod.baoHanh || '');
           setImage(prod.image || '');
+          setImage2(prod.image2 || '');
+          setImage3(prod.image3 || '');
+          setImage4(prod.image4 || '');
           setType(prod.type || '');
           setCPU(prod.cpu || '');
           setRAM(prod.ram || '');
@@ -90,6 +96,9 @@ function detailUpdate() {
             discount: discount,
             price: price,
             image: image,
+            image2: image2,
+            image3: image3,
+            image4: image4,
             type: type,
             baoHanh: warranty,
             cpu: CPU,
@@ -138,6 +147,9 @@ function detailUpdate() {
                 <div className="row">
                     <div className="img-product col-11 mx-auto col-md-4 card p-2 p-md-5">
                         <img src={prod.image} className="img-fluid" alt="" />
+                        <img src={prod.image2} className="img-fluid" alt="" />
+                        <img src={prod.image3} className="img-fluid" alt="" />
+                        <img src={prod.image4} className="img-fluid" alt="" />
                     </div>
                     <div className="col-md-8 d-flex flex-column justify-content-between mx-auto pe-0">
                         <div className="detailUpdate card p-4 col-md-12">
@@ -186,6 +198,12 @@ function detailUpdate() {
                             <input type="text" value={type} onChange={(e) => setType(e.target.value)} />
                             <p>Link ảnh: {prod.image}</p>
                             <input type="text" value={image} onChange={(e) => setImage(e.target.value)} />
+                            <p>Link ảnh 2: {prod.image2}</p>
+                            <input type="text" value={image2} onChange={(e) => setImage2(e.target.value)} />
+                            <p>Link ảnh 3: {prod.image3}</p>
+                            <input type="text" value={image3} onChange={(e) => setImage3(e.target.value)} />
+                            <p>Link ảnh 4: {prod.image4}</p>
+                            <input type="text" value={image4} onChange={(e) => setImage4(e.target.value)} />
                         </div>
                     </div>
                     <div className='desDetail card col-12 mt-2 p-4'>
@@ -197,7 +215,7 @@ function detailUpdate() {
                             </div>
                             <div className="col-12 detailUpdateBtn">
                                 <button className='btn btn-success' onClick={() => handleUpdate(prod.productID)}>Cập nhật</button>
-                                <button className='btn btn-primary'>Trở về</button>
+                                <button className='btn btn-primary me-2'><Link className='text-white' to={'../admin'}>Trở về</Link></button>
                             </div>
                         </div>
                     </div>
