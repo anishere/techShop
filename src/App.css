@@ -696,6 +696,10 @@ a.page-link {
   border-radius: 0.375rem;
 }
 
+.cart-item-detail h5 {
+  color: black;
+}
+
 .cart-item-detail p {
   color: #999;
   font-size: 0.75rem;

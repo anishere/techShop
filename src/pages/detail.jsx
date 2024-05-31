@@ -60,15 +60,20 @@ function detail() {
 
     const dispatch = useDispatch();
 
-    const handleIncrease = id => dispatch(addItem(id))
+    const handleIncrease = (productId, prodsType) => {
+        dispatch(addItem({ productId, prodsType }));
+      };
+
+      //off
     const handleEditValue = (e, id) => {
         const obj = {data: +e.target.value, id}
         dispatch(editQuantity(obj))
     }
-    const handleReduce = id => dispatch(reduceItem(id))
+    const handleReduce = (productId, prodsType) => {
+        dispatch(reduceItem({ productId, prodsType }));
+      };
 
     // slider
-    console.log(prod)
     const [nav1, setNav1] = useState(null);
     const [nav2, setNav2] = useState(null);
     let sliderRef1 = useRef(null);
@@ -138,12 +143,12 @@ function detail() {
                             <span><FaShippingFast className='detail-icons fs-5 my-1' />&nbsp; Miễn phí đơn hàng từ 5 triệu</span>
                             <span><AiOutlineFileProtect className='detail-icons fs-5 my-1' />&nbsp; Cam kết hàng chính hãng 100%</span>
                             <div className="detail-edit d-flex my-2">
-                                <button onClick={() => handleIncrease(prod.productID)} className="btn btn-outline-secondary">+</button>
-                                <input value={ids[prod.productID]} onChange={(e) => handleEditValue(e, prod.productID)} className="mx-2 text-center form-control" type="number"/>
-                                <button onClick={() => handleReduce(prod.productID)} className="btn btn-outline-secondary">-</button>
+                                <button onClick={() => handleIncrease(prod.productID, prod.type)} className="btn btn-outline-secondary">+</button>
+                                <input value={ids[prod.type][prod.productID]} onChange={(e) => handleEditValue(e, prod.productID)} className="mx-2 text-center form-control" type="text"/>
+                                <button onClick={() => handleReduce(prod.productID, prod.type)} className="btn btn-outline-secondary">-</button>
                             </div>
                             <div className="my-3">
-                                <button onClick={() => handleIncrease(prod.productID)} className="col-2 btn-buy btn">Mua</button>
+                                <button onClick={() => handleIncrease(prod.productID, prod.type)} className="col-2 btn-buy btn">Mua</button>
                             </div>
                         </div>
                         <div className="other p-3 text-center card col-md-12">
@@ -165,18 +170,84 @@ function detail() {
                             <div className="col-4">
                                 <h5>Thông tin chi tiết</h5>
                                 <p>Thương hiệu:&nbsp;&nbsp;{prod.brand}</p>
-                                <p>CPU: {prod.cpu}</p>
-                                <p>RAM: {prod.ram}</p>
-                                <p>Màn hình: {prod.manHinh}</p>
-                                <p>PIN: {prod.pin}</p>
-                                <p>Khối lượng: {prod.khoiLuong}</p>
-                                <p>Card Đồ họa: {prod.cardDoHoa}</p>
-                                <p>Bàn phím: {prod.banPhim}</p>
-                                <p>Màu sắc: {prod.mauSac}</p>
-                                <p>Nhu cầu: {prod.nhuCau}</p>
-                                <p>Lưu trữ: {prod.luuTru}</p>
-                                <p>Phụ kiện: {prod.phuKien}</p>
-                                <p>Kiểu kết nối: {prod.kieuKetNoi}</p>
+                                {(prod.type === 'lap' || prod.type === 'pc') &&
+                                <>
+                                    <p>CPU: {prod.cpu}</p>
+                                    <p>RAM: {prod.ram}</p>
+                                    <p>Màn hình: {prod.manHinh}</p>
+                                    <p>PIN: {prod.pin}</p>
+                                    <p>Khối lượng: {prod.khoiLuong}</p>
+                                    <p>Card Đồ họa: {prod.cardDoHoa}</p>
+                                    <p>Bàn phím: {prod.banPhim}</p>
+                                    <p>Màu sắc: {prod.mauSac}</p>
+                                    <p>Nhu cầu: {prod.nhuCau}</p>
+                                    <p>Lưu trữ: {prod.luuTru}</p>
+                                    <p>Phụ kiện: {prod.phuKien}</p>
+                                    <p>Kiểu kết nối: {prod.kieuKetNoi}</p>
+                                </>
+                                }
+                                {prod.type === 'cpu' &&
+                                <>
+                                    <p>Socket: {prod.socKet}</p>
+                                    <p>Số nhân xử lý: {prod.soNhan}</p>
+                                    <p>Số luồng xử lý: {prod.soLuong}</p>
+                                    <p>Kiến trúc: {prod.kienTruc}</p>
+                                    <p>Tốc độ: {prod.tocDo}</p>
+                                    <p>Cache: {prod.cache}</p>
+                                    <p>Chip đồ họa: {prod.chipDoHoa}</p>
+                                    <p>TDP: {prod.tdp}</p>
+                                    <p>Bộ nhớ hỗ trợ: {prod.boNhoHoTro}</p>
+                                </>
+                                }
+                                {prod.type === 'keyboard' &&
+                                <>
+                                    <p>Switch: {prod.switch}</p>
+                                    <p>Màu sắc: {prod.mauSac}</p>
+                                    <p>Kiểu kết nối: {prod.kieuKetNoi}</p>
+                                    <p>Đèn LED: {prod.denLed}</p>
+                                    <p>Kê tay: {prod.keTay}</p>
+                                    <p>Kích thước: {prod.kichThuoc}</p>
+                                </>
+                                }
+                                {prod.type === 'mouse' &&
+                                <>
+                                    <p>Màu sắc: {prod.mauSac}</p>
+                                    <p>Kiểu kết nối: {prod.kieuKetNoi}</p>
+                                    <p>Nhu cầu: {prod.nhuCau}</p>
+                                    <p>Kiểu cầm: {prod.kieuCam}</p>
+                                    <p>Số nút bấm: {prod.soNutBam}</p>
+                                    <p>Đèn LED: {prod.denLed}</p>
+                                    <p>Kích thước: {prod.kichThuoc}</p>
+                                    <p>Khối lượng: {prod.khoiLuong}</p>
+                                    <p>Độ phân giải (DPI): {prod.doPhanGiai}</p>
+                                    <p>Dạng cảm biến: {prod.dangCamBien}</p>
+                                    <p>Độ nhạy: {prod.doNhay}</p>
+                                </>
+                                }
+                                {prod.type === 'ram' &&
+                                <>
+                                    <p>Màu sắc: {prod.mauSac}</p>
+                                    <p>Thế hệ: {prod.theHe}</p>
+                                    <p>Bus: {prod.bus}</p>
+                                    <p>Đèn LED: {prod.denLed}</p>
+                                    <p>Loại hàng: {prod.loaiHang}</p>
+                                    <p>Part-number: {prod.partNumber}</p>
+                                    <p>Nhu cầu: {prod.nhuCau}</p>
+                                    <p>Dung lượng: {prod.dungLuong}</p>
+                                    <p>Voltage: {prod.vol}</p>
+                                </>
+                                }
+                                {prod.type === 'headphone' &&
+                                <>
+                                    <p>Tần số: {prod.tanSo}</p>
+                                    <p>Kết nối: {prod.ketNoi}</p>
+                                    <p>Kiểu kết nối: {prod.kieuKetNoi}</p>
+                                    <p>Màu sắc: {prod.mauSac}</p>
+                                    <p>Đèn LED: {prod.denLed}</p>
+                                    <p>Microphone: {prod.microphone}</p>
+                                    <p>Khối lượng: {prod.khoiLuong}</p>
+                                </>
+                                }
                             </div>
                         </div>
                     </div>

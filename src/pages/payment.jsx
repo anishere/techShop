@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 
 function payment() {
-    const [SDT, setSDT] = useState()
-    const [name, setName] = useState()
-    const [address, setAddress] = useState()
+    const [SDT, setSDT] = useState('')
+    const [name, setName] = useState('')
+    const [address, setAddress] = useState('')
 
     const navigate = useNavigate()
 
@@ -18,18 +18,41 @@ function payment() {
     const totalPrice = useSelector(state => state.prod.totalPrice)
     const listcart = useSelector(state => state.prod.ids)
 
+    const convertCartToArray = (cart) => {
+        let cartArray = [];
+        
+        Object.keys(cart).forEach(type => {
+          Object.keys(cart[type]).forEach(id => {
+            cartArray.push({
+              type: type,
+              id: id,
+              quantity: cart[type][id]
+            });
+          });
+        });
+        
+        return cartArray;
+      };
+    
+    const carttoDB = convertCartToArray(listcart)
+    
+    console.log(carttoDB);
+
     useEffect(() => {
         if(totalPrice <= 0)
             navigate('/')
     }, [])
 
     const handleSubmit = async () => {
+        if(SDT == '' || name == '' || address == '') {
+            alert("Hãy nhập đủ thông tin trước khi tiến hành đặt hàng")
+        } else {
         try {
             const response = await axiosCus.post(`${URLorder}`, {
                 phoneNumber: SDT,
                 name: name,
                 address: address,
-                listCart: JSON.stringify(listcart),
+                listCart: JSON.stringify(carttoDB),
                 totalPrice: totalPrice,
                 status: 'Đang xử lí',
             });
@@ -47,6 +70,7 @@ function payment() {
         } catch (error) {
             // Xử lý lỗi
             console.error("Error updating product:", error);
+        }
         }
     }
     

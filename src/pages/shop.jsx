@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { UpInfoProd, addItem } from "../redux/detailSlice";
 import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { URLtotalProdCPU, URLtotalProdKeyBoard, URLtotalProdMouse, URLtotalProdRAM, URLtotalProdHeadPhone } from "../URL/url";
+import { URLtotalProdCPUbyBrand, URLtotalProdKeyBoardbyBrand, 
+    URLtotalProdMousebyBrand, URLtotalProdRAMbyBrand, URLtotalProdHeadPhonebyBrand
+ } from "../URL/url";
 
 import claptop from "../assets/imgs/categoryProd/claptop.webp";
 import ccpu from "../assets/imgs/categoryProd/ccpu.webp";
@@ -25,7 +29,8 @@ function shop() {
     const [totalProds, setTotalProds] = useState()
     const totalPages = Math.ceil((totalProds / 20))
 
-    //const [selected, setSelected] = useState(true)
+
+    const [selected, setSelected] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -42,7 +47,7 @@ function shop() {
                         const res = await axiosCus.get(`ProductsPCLap/GetLaptopsBrand?page=1&pageSize=20&brand=${brandProds}`);
                         setListProds(res.listproducts)
                         const restotal = await axiosCus.get(`${URLtotalProdBrand}${brandProds}`);
-                        setTotalProds(restotal.brandProductCount);
+                        setTotalProds(restotal.totalCount);
                     } 
                 } catch (error) {
                     console.error('Error fetching data:', error);
@@ -53,6 +58,13 @@ function shop() {
                     setListProds(res.listcpu)
                     const resBrand = await axiosCus.get(URLBrandsCPU)
                     setListBrands(resBrand.brands)
+                    if(brandProds === 'ALL') {
+                        const restotal = await axiosCus.get(URLtotalProdCPU);
+                        setTotalProds(restotal.totalCount);
+                    } else {
+                        const restotal = await axiosCus.get(`${URLtotalProdCPUbyBrand}${brandProds}`);
+                        setTotalProds(restotal.totalCount);
+                    }
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -62,6 +74,13 @@ function shop() {
                     setListProds(res.listKeyBoard)
                     const resBrand = await axiosCus.get(URLBrandsKeyBoard)
                     setListBrands(resBrand.brands)
+                    if(brandProds === 'ALL') {
+                        const restotal = await axiosCus.get(URLtotalProdKeyBoard);
+                        setTotalProds(restotal.totalCount);
+                    } else {
+                        const restotal = await axiosCus.get(`${URLtotalProdKeyBoardbyBrand}${brandProds}`);
+                        setTotalProds(restotal.totalCount);
+                    }
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -71,6 +90,13 @@ function shop() {
                     setListProds(res.listMouse)
                     const resBrand = await axiosCus.get(URLBrandsMouse)
                     setListBrands(resBrand.brands)
+                    if(brandProds === 'ALL') {
+                        const restotal = await axiosCus.get(URLtotalProdMouse);
+                        setTotalProds(restotal.totalCount);
+                    } else {
+                        const restotal = await axiosCus.get(`${URLtotalProdMousebyBrand}${brandProds}`);
+                        setTotalProds(restotal.totalCount);
+                    }
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -80,6 +106,13 @@ function shop() {
                     setListProds(res.listram)
                     const resBrand = await axiosCus.get(URLBrandsRAM)
                     setListBrands(resBrand.brands)
+                    if(brandProds === 'ALL') {
+                        const restotal = await axiosCus.get(URLtotalProdRAM);
+                        setTotalProds(restotal.totalCount);
+                    } else {
+                        const restotal = await axiosCus.get(`${URLtotalProdRAMbyBrand}${brandProds}`);
+                        setTotalProds(restotal.totalCount);
+                    }
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -89,6 +122,13 @@ function shop() {
                     setListProds(res.listTaiNghe)
                     const resBrand = await axiosCus.get(URLBrandsHeadPhone)
                     setListBrands(resBrand.brands)
+                    if(brandProds === 'ALL') {
+                        const restotal = await axiosCus.get(URLtotalProdHeadPhone);
+                        setTotalProds(restotal.totalCount);
+                    } else {
+                        const restotal = await axiosCus.get(`${URLtotalProdHeadPhonebyBrand}${brandProds}`);
+                        setTotalProds(restotal.totalCount);
+                    }
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -109,7 +149,15 @@ function shop() {
                         setListProds(res.listproducts)
                     }
                 }
-                
+                if(prodsType === 'cpu') {
+                    if(brandProds === 'ALL') {                     
+                        const res = await axiosCus.get(`ProductsCPU/ListCPU?page=${e.selected+1}&pageSize=20`);
+                        setListProds(res.listcpu)
+                    } else {                  
+                        const res = await axiosCus.get(`ProductsCPU/GetProductsByBrand?brand=${brandProds}&page=${e.selected+1}&pageSize=20`);
+                        setListProds(res.listcpu)
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -174,6 +222,7 @@ function shop() {
                         <h5>Danh mục</h5>
                         <div className="category-shop-container d-flex justify-content-around">
                             <div onClick={() => {
+                                setSelected(!selected)
                                 setProdsType("laptop")
                                 setBrandProds("ALL")
                             }}>
@@ -183,6 +232,7 @@ function shop() {
                                 </a>
                             </div>
                             <div onClick={() => {
+                                setSelected(!selected)
                                 setProdsType("cpu")
                                 setBrandProds("ALL")
                             }}>
@@ -192,6 +242,7 @@ function shop() {
                                 </a>
                             </div>
                             <div onClick={() => {
+                                setSelected(!selected)
                                 setProdsType("keyboard")
                                 setBrandProds("ALL")
                             }}>
@@ -201,6 +252,7 @@ function shop() {
                                 </a>
                             </div>
                             <div onClick={() => {
+                                setSelected(!selected)
                                 setProdsType("mouse")
                                 setBrandProds("ALL")
                             }}>
@@ -210,6 +262,7 @@ function shop() {
                                 </a>
                             </div>
                             <div onClick={() => {
+                                setSelected(!selected)
                                 setProdsType("ram");
                                 setBrandProds("ALL");
                             }}>
@@ -219,6 +272,7 @@ function shop() {
                                 </a>
                             </div>
                             <div onClick={() => {
+                                setSelected(!selected)
                                 setProdsType("headphone");
                                 setBrandProds("ALL");
                             }}>
@@ -287,7 +341,7 @@ function shop() {
         {totalPages > 1 &&
             <div className='d-flex justify-content-center mb-3'>
             <ReactPaginate
-            // key={selected}
+            key={selected}
             nextLabel=">"
             onPageChange={(e) => {handleSelectPage(e)}}
             pageRangeDisplayed={3}

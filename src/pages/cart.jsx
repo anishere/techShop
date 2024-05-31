@@ -153,7 +153,7 @@ function cart() {
                     {prodsCPU && prodsCPU.filter(product => 
                         keyIdsCPU.includes(`${product.productID}`) && ids.cpu[product.productID] > 0) //trong keyIds la cac string
                         .map(product => {
-                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.lap[product.productID]
+                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.cpu[product.productID]
                             totalPriceItems += totalPriceItem
                         return (
                         <div key={product.productID} className="cart-item d-md-flex col-md-11 mx-auto p-3 m-2">
@@ -182,7 +182,7 @@ function cart() {
                     }{prodsKeyBoard && prodsKeyBoard.filter(product => 
                         keyIdsKeyBoard.includes(`${product.productID}`) && ids.keyboard[product.productID] > 0) //trong keyIds la cac string
                         .map(product => {
-                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.lap[product.productID]
+                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.keyboard[product.productID]
                             totalPriceItems += totalPriceItem
                         return (
                         <div key={product.productID} className="cart-item d-md-flex col-md-11 mx-auto p-3 m-2">
@@ -211,7 +211,7 @@ function cart() {
                     }{prodsMouse && prodsMouse.filter(product => 
                         keyIdsMouse.includes(`${product.productID}`) && ids.mouse[product.productID] > 0) //trong keyIds la cac string
                         .map(product => {
-                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.lap[product.productID]
+                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.mouse[product.productID]
                             totalPriceItems += totalPriceItem
                         return (
                         <div key={product.productID} className="cart-item d-md-flex col-md-11 mx-auto p-3 m-2">
@@ -241,7 +241,7 @@ function cart() {
                     {prodsRAM && prodsRAM.filter(product => 
                         keyIdsRAM.includes(`${product.productID}`) && ids.ram[product.productID] > 0) //trong keyIds la cac string
                         .map(product => {
-                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.lap[product.productID]
+                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.ram[product.productID]
                             totalPriceItems += totalPriceItem
                         return (
                         <div key={product.productID} className="cart-item d-md-flex col-md-11 mx-auto p-3 m-2">
@@ -270,7 +270,7 @@ function cart() {
                     }{prodsHeadPhone && prodsHeadPhone.filter(product => 
                         keyIdsHeadPhone.includes(`${product.productID}`) && ids.headphone[product.productID] > 0) //trong keyIds la cac string
                         .map(product => {
-                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.lap[product.productID]
+                            const totalPriceItem = (product.price - (product.price * product.discount)) * ids.headphone[product.productID]
                             totalPriceItems += totalPriceItem
                         return (
                         <div key={product.productID} className="cart-item d-md-flex col-md-11 mx-auto p-3 m-2">

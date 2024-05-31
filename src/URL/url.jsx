@@ -32,14 +32,50 @@ export const URLIDCPU = 'ProductsCPU/GetCPUById/'
 export const URLnewProds = 'ProductsPCLap/LatestLapPc?count=4'
 export const URLhotProds = 'ProductsPCLap/HotProducts'
 
-//Total Product
+//Total Product 
 export const URLtotalProd = 'ProductsPCLap/TotalCount'
+export const URLtotalProdCPU = 'ProductsCPU/TotalCount'
+export const URLtotalProdKeyBoard = 'ProductsKeyBoard/TotalCount'
+export const URLtotalProdRAM = 'ProductsRAM/TotalCount'
+export const URLtotalProdMouse = 'ProductsMouse/TotalCount'
+export const URLtotalProdHeadPhone = 'ProductsTaiNghe/TotalCount'
+//Total by brand
 export const URLtotalProdBrand = 'ProductsPCLap/ProductCountByBrand/'
+export const URLtotalProdCPUbyBrand = 'ProductsCPU/TotalProdsByBrand?brand='
+export const URLtotalProdKeyBoardbyBrand = 'ProductsKeyBoard/TotalProdsByBrand?brand='
+export const URLtotalProdMousebyBrand = 'ProductsMouse/TotalProdsByBrand?brand='
+export const URLtotalProdRAMbyBrand = 'ProductsRAM/TotalProdsByBrand?brand='
+export const URLtotalProdHeadPhonebyBrand = 'ProductsTaiNghe/TotalProdsByBrand?brand='
 
-//CUD Product
+//CUD Product Lap
 export const URLupdateProd = 'ProductsPCLap/UpdateLapPc/'
 export const URLaddProd = 'ProductsPCLap/AddLapPc/'
 export const URLdeleteProd = 'ProductsPCLap/DeleteLapPc/'
+
+//CUD ProdCPU
+export const URLaddProdCPU = 'ProductsCPU/AddCPU'
+export const URLdeleteProdCPU = 'ProductsCPU/DeleteCPU/'
+export const URLupdateProdCPU = 'ProductsCPU/UpdateCPU/'
+
+//CUD ProdKeyBoard
+export const URLaddProdKeyBoard = 'ProductsKeyBoard/AddKeyBoard'
+export const URLdeleteProdKeyBoard = 'ProductsKeyBoard/DeleteKeyBoard/'
+export const URLupdateProdKeyBoard = 'ProductsKeyBoard/UpdateKeyBoard/'
+
+//CUD ProdMouse
+export const URLaddProdMouse = 'ProductsMouse/AddMouse'
+export const URLdeleteProdMouse = 'ProductsMouse/DeleteMouse/'
+export const URLupdateProdMouse = 'ProductsMouse/UpdateMouse/'
+
+//CUD ProdRAM
+export const URLaddProdRAM = 'ProductsRAM/AddRAM'
+export const URLdeleteProdRAM = 'ProductsRAM/DeleteRAM/'
+export const URLupdateProdRAM = 'ProductsRAM/UpdateRAM/'
+
+//CUD ProdHeadPhone
+export const URLaddProdHeadPhone = 'ProductsTaiNghe/AddTaiNghe'
+export const URLdeleteProdHeadPhone = 'ProductsTaiNghe/DeleteTaiNghe/'
+export const URLupdateProdHeadPhone = 'ProductsTaiNghe/UpdateTaiNghe/'
 
 //Update InfoShop
 export const URLupdateInfoShop = 'InfoShop/UpdateInfoShop'

@@ -3,12 +3,14 @@
 import Table from 'react-bootstrap/Table';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
-import { URLLap, URLaddProd, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
+import { URLCPU, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
 import { infoShop, about, allOrders, feedBack } from '.././URL/url';
 import ReactPaginate from 'react-paginate';
 import { UpInfoProd } from '../redux/detailSlice';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { URLtotalProd, URLtotalProdCPU, URLtotalProdKeyBoard, URLtotalProdMouse, URLtotalProdRAM, URLtotalProdHeadPhone } from "../URL/url";
 
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -48,6 +50,11 @@ function admin() {
 
     const types = [
         'lap',
+        'cpu',
+        'mouse',
+        'keyboard',
+        'ram',
+        'headphone',
     ]
 
     useEffect(() => {
@@ -77,9 +84,40 @@ function admin() {
                 else if (type === 'lap' || type === 'pc')
                 {
                     setListRes(res.listproducts)
-                    let total = await axiosCus.get('ProductsPCLap/TotalCount')
+                    let total = await axiosCus.get(URLtotalProd)
                     setTotalProds(total.totalCount)
-                }     
+                }    
+                else if (type === 'cpu')
+                {
+                    console.log(res.listcpu)
+                    setListRes(res.listcpu)
+                    let total = await axiosCus.get(URLtotalProdCPU)
+                    setTotalProds(total.totalCount)
+                } 
+                else if (type === 'keyboard')
+                {
+                    setListRes(res.listKeyBoard)
+                    let total = await axiosCus.get(URLtotalProdKeyBoard)
+                    setTotalProds(total.totalCount)
+                } 
+                else if (type === 'mouse')
+                {
+                    setListRes(res.listMouse)
+                    let total = await axiosCus.get(URLtotalProdMouse)
+                    setTotalProds(total.totalCount)
+                }
+                else if (type === 'ram')
+                {
+                    setListRes(res.listram)
+                    let total = await axiosCus.get(URLtotalProdRAM)
+                    setTotalProds(total.totalCount)
+                }
+                else if (type === 'headphone')
+                {
+                    setListRes(res.listTaiNghe)
+                    let total = await axiosCus.get(URLtotalProdHeadPhone)
+                    setTotalProds(total.totalCount)
+                } 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -88,7 +126,11 @@ function admin() {
     }, [URL, type]);
 
     const handleSelectPage = (e) => {
-        setURL(`ProductsPCLap/GetLaptops?page=${e.selected+1}&pageSize=20`)
+        if(type === 'lap' || type === 'pc') {
+            setURL(`ProductsPCLap/GetLaptops?page=${e.selected+1}&pageSize=20`)
+        } else if (type === 'cpu') {
+            setURL(`ProductsCPU/ListCPU?page=${e.selected+1}&pageSize=20`)
+        }
     }
 
     const handleSelectProd = (id, type) => {
@@ -109,6 +151,7 @@ function admin() {
     const [image3, setImage3] = useState()
     const [image4, setImage4] = useState()
     const [typeAdd, setTypeAdd] = useState()
+    //lap
     const [CPU, setCPU] = useState()
     const [RAM, setRAM] = useState()
     const [screen, setScreen] = useState()
@@ -122,6 +165,38 @@ function admin() {
     const [storage, setStorage] = useState()
     const [accessory, setAccessory] = useState()
     const [connect, setConnect] = useState()
+    //cpu
+    const [socKet,setSocKet] = useState()
+    const [soNhan, setSoNhan] = useState()
+    const [soLuong, setSoLuong] = useState()
+    const [kienTruc, setKienTruc] = useState()
+    const [tocDo, setTocDo] = useState()
+    const [cache, setCache] = useState()
+    const [chipDoHoa, setChipDoHoa] = useState()
+    const [tdp, setTdp] = useState()
+    const [boNhoHoTro, setboNhoHoTro] = useState() 
+    //keyboard
+    const [switchKB, setSwitchKB] = useState()
+    const [kieuKetNoi, setKieuKetNoi] = useState()
+    const [denLed, setDenLed] = useState()
+    const [keTay, setKeTay] = useState()
+    const [kichThuoc, setKichThuoc] = useState()
+    //mouse
+    const [kieuCam, setKieuCam] = useState()
+    const [soNutBam, setSoNutBam] = useState()
+    const [doPhanGiai, setDoPhanGiai] = useState()
+    const [dangCamBien, setDangCamBien] = useState() 
+    const [doNhay, setDoNhay] = useState()
+    //RAM
+    const [theHe, setTheHe] = useState()
+    const [bus, setBus] = useState()
+    const [loaiHang, setLoaiHang] = useState()
+    const [partNumber, setPartNumber] = useState()
+    const [vol, setVol] = useState()
+    //HeadPhone
+    const [tanSo, setTanSo] = useState()
+    const [microphone, setMicrophone] = useState()
+
     const [dateUpdate, setDateUpdate] = useState()
     const [hot, setHot] = useState()
 
@@ -129,6 +204,7 @@ function admin() {
     const handleShow = () => setShow(true);
     const handleAddProd = async () => {
         try {
+        if(type === 'lap') {
           const response = await axiosCus.post(`${URLaddProd}`, {
             productName: name,
             description: des,
@@ -172,6 +248,204 @@ function admin() {
             });
             handleClose()
             location.reload();
+            }
+            else if (type === 'cpu') {
+                const response = await axiosCus.post(`${URLaddProdCPU}`, {
+                    productName: name,
+                    description: des,
+                    brand: brand,
+                    discount: discount,
+                    price: price,
+                    image: image,
+                    image2: image2,
+                    image3: image3,
+                    image4: image4,
+                    type: type,
+                    baoHanh: warranty,
+                    socKet: socKet,
+                    soNhan: soNhan,
+                    soLuong: soLuong,
+                    kienTruc: kienTruc,
+                    tocDo: tocDo,
+                    cache: cache,
+                    chipDoHoa: chipDoHoa,
+                    tdp: tdp,
+                    boNhoHoTro: boNhoHoTro,
+                    ngayNhap: new Date(dateUpdate).toISOString(),
+                  });
+              
+                  // Xử lý dữ liệu trả về nếu cần thiết
+                  console.log(response.statusCode);
+                  toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                    handleClose()
+                    location.reload();
+            }
+            else if (type === 'keyboard') {
+                const response = await axiosCus.post(`${URLaddProdKeyBoard}`, {
+                    productName: name,
+                    description: des,
+                    brand: brand,
+                    discount: discount,
+                    price: price,
+                    image: image,
+                    image2: image2,
+                    image3: image3,
+                    image4: image4,
+                    type: type,
+                    baoHanh: warranty,
+                    switch: switchKB,
+                    mauSac: color,
+                    kieuKetNoi: kieuKetNoi,
+                    denLed: denLed,
+                    keTay: keTay,
+                    kichThuoc: kichThuoc,
+                    ngayNhap: new Date(dateUpdate).toISOString(),
+                  });
+              
+                  // Xử lý dữ liệu trả về nếu cần thiết
+                  console.log(response.statusCode);
+                  toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                    handleClose()
+                    location.reload();
+            }
+            else if (type === 'mouse') {
+                const response = await axiosCus.post(`${URLaddProdMouse}`, {
+                    productName: name,
+                    description: des,
+                    brand: brand,
+                    discount: discount,
+                    price: price,
+                    image: image,
+                    image2: image2,
+                    image3: image3,
+                    image4: image4,
+                    type: type,
+                    baoHanh: warranty,
+                    mauSac: color,
+                    kieuKetNoi: kieuKetNoi,
+                    nhuCau: demand,
+                    kieuCam: kieuCam,
+                    soNutBam: soNutBam,
+                    denLed: denLed,
+                    kichThuoc: kichThuoc,
+                    khoiLuong: weight,
+                    doPhanGiai: doPhanGiai,
+                    dangCamBien: dangCamBien,
+                    doNhay: doNhay,
+                    ngayNhap: new Date(dateUpdate).toISOString(),
+                  });
+              
+                  // Xử lý dữ liệu trả về nếu cần thiết
+                  console.log(response.statusCode);
+                  toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                    handleClose()
+                    location.reload();
+            }
+            else if (type === 'ram') {
+                const response = await axiosCus.post(`${URLaddProdRAM}`, {
+                    productName: name,
+                    description: des,
+                    brand: brand,
+                    discount: discount,
+                    price: price,
+                    image: image,
+                    image2: image2,
+                    image3: image3,
+                    image4: image4,
+                    type: type,
+                    baoHanh: warranty,
+                    mauSac: color,
+                    theHe: theHe,
+                    bus: bus,
+                    denLed: denLed,
+                    loaiHang: loaiHang,
+                    partNumber: partNumber,
+                    nhuCau: demand,
+                    dungLuong: storage,
+                    vol: vol,
+                    ngayNhap: new Date(dateUpdate).toISOString(),
+                  });
+              
+                  // Xử lý dữ liệu trả về nếu cần thiết
+                  console.log(response.statusCode);
+                  toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                    handleClose()
+                    location.reload();
+            }
+            else if (type === 'headphone') {
+                const response = await axiosCus.post(`${URLaddProdHeadPhone}`, {
+                    productName: name,
+                    description: des,
+                    brand: brand,
+                    discount: discount,
+                    price: price,
+                    image: image,
+                    image2: image2,
+                    image3: image3,
+                    image4: image4,
+                    type: type,
+                    baoHanh: warranty,
+                    tanSo: tanSo,
+                    ketNoi: connect,
+                    kieuKetNoi: kieuKetNoi,
+                    mauSac: color,
+                    denLed: denLed,
+                    microphone: microphone,
+                    khoiLuong: weight,
+                    ngayNhap: new Date(dateUpdate).toISOString(),
+                  });
+              
+                  // Xử lý dữ liệu trả về nếu cần thiết
+                  console.log(response.statusCode);
+                  toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                    handleClose()
+                    location.reload();
+            }
         } catch (error) {
           // Xử lý lỗi
           console.error("Error updating product:", error);
@@ -180,6 +454,7 @@ function admin() {
 
     const handleDeleteProduct = async (id) => {
         try {
+            if(type === 'lap') {
             const response = await axiosCus.delete(`${URLdeleteProd}${id}`);
             // Xử lý dữ liệu trả về nếu cần thiết
             console.log(response.statusCode);
@@ -194,6 +469,82 @@ function admin() {
               theme: "dark",
               });
               location.reload();
+            } else if (type === 'cpu') {
+                const response = await axiosCus.delete(`${URLdeleteProdCPU}${id}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response.statusCode);
+            toast.success(response.statusMessage, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+              location.reload();
+            } else if (type === 'keyboard') {
+                const response = await axiosCus.delete(`${URLdeleteProdKeyBoard}${id}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response.statusCode);
+            toast.success(response.statusMessage, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+              location.reload();
+            } else if (type === 'mouse') {
+                const response = await axiosCus.delete(`${URLdeleteProdMouse}${id}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response.statusCode);
+            toast.success(response.statusMessage, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+              location.reload();
+            } else if (type === 'ram') {
+                const response = await axiosCus.delete(`${URLdeleteProdRAM}${id}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response.statusCode);
+            toast.success(response.statusMessage, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+              location.reload();
+            } else if (type === 'headphone') {
+                const response = await axiosCus.delete(`${URLdeleteProdHeadPhone}${id}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response.statusCode);
+            toast.success(response.statusMessage, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              });
+              location.reload();
+            }
           } catch (error) {
             // Xử lý lỗi
             console.error("Error updating product:", error);
@@ -373,8 +724,7 @@ function admin() {
     }
 
     const formatNumber = (number) => parseFloat(number).toLocaleString('vi-VN');
-    
-    console.log(listRes)
+
     return (<>
         <div className="container-xxl mb-5">
         <div className="admin-button mb-5">
@@ -382,7 +732,12 @@ function admin() {
                 <button className='btn btn-primary' onClick={() => handleSelectURL(about,'about')}>Trang giới thiệu</button>
                 <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(allOrders,'allOrders')}>Thông tin đặt hàng</button>
                 <button className='btn btn-primary' onClick={() => handleSelectURL(feedBack,'feedback')}>FeedBack</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLLap,'lap')}>Sản phẩm LapTop</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLLap,'lap')}>LapTop</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLCPU,'cpu')}>CPU</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLMouse,'mouse')}>Mouse</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLKeyBoard,'keyboard')}>KeyBoard</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLRAM,'ram')}>RAM</button>
+                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLTaiNghe,'headphone')}>Tai Nghe</button>
         </div>
 
         <div className="admin-table">
@@ -498,6 +853,69 @@ function admin() {
                                 <th>Hot</th>
                                 </>
                             }
+                            {
+                                (type === 'cpu') &&
+                                <>
+                                <th>Socket</th>
+                                <th>Số nhân xử lý</th>
+                                <th>Số luồng xử lý</th>
+                                <th>Kiến trúc</th>
+                                <th>Tốc độ</th>
+                                <th>Cache</th>
+                                <th>Chip đồ họa</th>
+                                <th>TDP</th>
+                                <th>Bộ nhớ hỗ trợ</th>
+                                </>
+                            }
+                            {(type === 'keyboard') &&
+                                <>
+                                <th>Switch</th>
+                                <th>Màu sắc</th>
+                                <th>Kiểu kết nối</th>
+                                <th>Đèn LED</th>
+                                <th>Kê tay</th>
+                                <th>Kích thước</th>
+                                </>
+                            }
+                            {(type === 'mouse') &&
+                                <>
+                                <th>Màu sắc</th>
+                                <th>Kiểu kết nối</th>
+                                <th>Nhu cầu</th>
+                                <th>Kiểu cầm</th>
+                                <th>Số nút bấm</th>
+                                <th>Đèn LED</th>
+                                <th>Kích thước</th>
+                                <th>Khối lượng</th>
+                                <th>Độ phân giải</th>
+                                <th>Dạng cảm biến</th>
+                                <th>Độ nhạy</th>
+                                </>
+                            }
+                            {(type === 'ram') &&
+                                <>
+                                <th>Màu sắc</th>
+                                <th>Thế hệ</th>
+                                <th>Bus</th>
+                                <th>Đèn LED</th>
+                                <th>Loại hàng</th>
+                                <th>Part-Number</th>
+                                <th>Nhu cầu</th>
+                                <th>Dung lượng</th>
+                                <th>Voltage</th>
+                                </>
+                            }
+                            {(type === 'headphone') &&
+                                <>
+                                <th>Tần số</th>
+                                <th>Kết nối</th>
+                                <th>Kiểu kết nối</th>
+                                <th>Màu sắc</th>
+                                <th>Đèn LED</th>
+                                <th>Microphone</th>
+                                <th>Khối lượng</th>
+                                </>
+                            }
                             <th>Ngày nhập</th> 
                             <th>Chi tiết sp</th>
                             <th>Xóa</th>
@@ -603,7 +1021,9 @@ function admin() {
                                     <td><p>{item.phoneNumber}</p></td>
                                     <td><p>{item.name}</p></td>
                                     <td><p>{item.address}</p></td>
-                                    <td><p>{item.listCart}</p></td>
+                                    <td>                         
+                                        <p>{item.listCart}</p>
+                                    </td>
                                     <td><p>{formatNumber(item.totalPrice)}</p></td>
                                     <td><p>{item.status}</p></td>
                                     <td><button onClick={() => handleDeleteOrder(item.id)} className='btn btn-danger'>Xóa</button></td>
@@ -649,6 +1069,68 @@ function admin() {
                                         <td><p>{item.phuKien}</p></td>
                                         <td><p>{item.kieuKetNoi}</p></td>
                                         <td><p>{item.hot}</p></td>
+                                        </>
+                                    }
+                                    {(item.type === 'cpu') &&
+                                        <>
+                                        <td><p>{item.socKet}</p></td>
+                                        <td><p>{item.soNhan}</p></td>
+                                        <td><p>{item.soLuong}</p></td>
+                                        <td><p>{item.kienTruc}</p></td>
+                                        <td><p>{item.tocDo}</p></td>
+                                        <td><p>{item.cache}</p></td>
+                                        <td><p>{item.chipDoHoa}</p></td>
+                                        <td><p>{item.tdp}</p></td>
+                                        <td><p>{item.boNhoHoTro}</p></td>         
+                                        </>
+                                    }
+                                    {(item.type === 'keyboard') &&
+                                        <>
+                                        <td><p>{item.switch}</p></td>
+                                        <td><p>{item.mauSac}</p></td>
+                                        <td><p>{item.kieuKetNoi}</p></td>
+                                        <td><p>{item.denLed}</p></td>
+                                        <td><p>{item.keTay}</p></td>
+                                        <td><p>{item.kichThuoc}</p></td>
+                                        </>
+                                    }
+                                    {(item.type === 'mouse') &&
+                                        <>
+                                        <td><p>{item.mauSac}</p></td>
+                                        <td><p>{item.kieuKetNoi}</p></td>
+                                        <td><p>{item.nhuCau}</p></td>
+                                        <td><p>{item.kieuCam}</p></td>
+                                        <td><p>{item.soNutBam}</p></td>
+                                        <td><p>{item.denLed}</p></td>
+                                        <td><p>{item.kichThuoc}</p></td>
+                                        <td><p>{item.khoiLuong}</p></td>
+                                        <td><p>{item.doPhanGiai}</p></td>
+                                        <td><p>{item.dangCamBien}</p></td>
+                                        <td><p>{item.doNhay}</p></td>
+                                        </>
+                                    }
+                                    {(item.type === 'ram') &&
+                                        <>
+                                        <td><p>{item.mauSac}</p></td>
+                                        <td><p>{item.theHe}</p></td>
+                                        <td><p>{item.bus}</p></td>
+                                        <td><p>{item.denLed}</p></td>
+                                        <td><p>{item.loaiHang}</p></td>
+                                        <td><p>{item.partNumber}</p></td>
+                                        <td><p>{item.nhuCau}</p></td>
+                                        <td><p>{item.dungLuong}</p></td>
+                                        <td><p>{item.vol}</p></td>
+                                        </>
+                                    }
+                                    {(item.type === 'headphone') &&
+                                        <>
+                                        <td><p>{item.tanSo}</p></td>
+                                        <td><p>{item.ketNoi}</p></td>
+                                        <td><p>{item.kieuKetNoi}</p></td>
+                                        <td><p>{item.mauSac}</p></td>
+                                        <td><p>{item.denLed}</p></td>
+                                        <td><p>{item.microphone}</p></td>
+                                        <td><p>{item.khoiLuong}</p></td>
                                         </>
                                     }
                                     <td><p>{item.ngayNhap}</p></td> 
@@ -697,6 +1179,7 @@ function admin() {
                 <div className="row">
                     <div className="col-12 d-flex flex-column justify-content-between mx-auto pe-0">
                         <div className="detailUpdate card p-4 col-md-12">
+                            <p>Bạn đang thêm sản phầm kiểu: <span className='text-primary'>{type}</span></p>
                             <p className='text-danger'>*Lưu ý: Nhập hết tất cả thông tin</p>
                             <p>Tên: </p>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
@@ -708,6 +1191,8 @@ function admin() {
                             <input type="number" value={discount} onChange={(e) => setDiscount(e.target.value)} />
                             <p>Bảo hành:</p>
                             <input type="text" value={warranty} onChange={(e) => setWarranty(e.target.value)} />
+                            {type === 'lap' &&
+                            <>
                             <p>Hệ điều hành:</p>
                             <input type="text" value={OS} onChange={(e) => setOS(e.target.value)} />
                             <p>CPU:</p>
@@ -734,10 +1219,116 @@ function admin() {
                             <input type="text" value={accessory} onChange={(e) => setAccessory(e.target.value)} />
                             <p>Kiểu kết nối:</p>
                             <input type="text" value={connect} onChange={(e) => setConnect(e.target.value)} />
-                            <p>Ngày cập nhật (năm-tháng-ngày) (2024-01-13) : </p>
-                            <input type="text" value={dateUpdate} onChange={(e) => setDateUpdate(e.target.value)} />
                             <p>Sản phẩm có hot không: </p>
                             <input type="text" value={hot} onChange={(e) => setHot(e.target.value)} />
+                            </>
+                            }
+                            {type === 'cpu' &&
+                            <>
+                            <p>Socket: </p>
+                            <input type="text" value={socKet} onChange={(e) => setSocKet(e.target.value)} />
+                            <p>Số nhân xử lý: </p>
+                            <input type="text" value={soNhan} onChange={(e) => setSoNhan(e.target.value)} />
+                            <p>Số luồng xử lý: </p>
+                            <input type="text" value={soLuong} onChange={(e) => setSoLuong(e.target.value)} />
+                            <p>Kiến trúc: </p>
+                            <input type="text" value={kienTruc} onChange={(e) => setKienTruc(e.target.value)} />
+                            <p>Tốc độ: </p>
+                            <input type="text" value={tocDo} onChange={(e) => setTocDo(e.target.value)} />
+                            <p>Cache: </p>
+                            <input type="text" value={cache} onChange={(e) => setCache(e.target.value)} />
+                            <p>Chip đồ họa: </p>
+                            <input type="text" value={chipDoHoa} onChange={(e) => setChipDoHoa(e.target.value)} />
+                            <p>TPD: </p>
+                            <input type="text" value={tdp} onChange={(e) => setTdp(e.target.value)} />
+                            <p>Bộ nhớ hỗ trợ: </p>
+                            <input type="text" value={boNhoHoTro} onChange={(e) => setboNhoHoTro(e.target.value)} />
+                            </>
+                            }
+                            {type === 'keyboard' &&
+                            <>
+                            <p>Switch: </p>
+                            <input type="text" value={switchKB} onChange={(e) => setSwitchKB(e.target.value)} />
+                            <p>Màu sắc: </p>
+                            <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
+                            <p>Kiểu kết nối: </p>
+                            <input type="text" value={kieuKetNoi} onChange={(e) => setKieuKetNoi(e.target.value)} />
+                            <p>Đèn LED: </p>
+                            <input type="text" value={denLed} onChange={(e) => setDenLed(e.target.value)} />
+                            <p>Kê tay: </p>
+                            <input type="text" value={keTay} onChange={(e) => setKeTay(e.target.value)} />
+                            <p>Kích thước: </p>
+                            <input type="text" value={kichThuoc} onChange={(e) => setKichThuoc(e.target.value)} />
+                            </>
+                            }
+                            {type === 'mouse' &&
+                            <>
+                            <p>Màu sắc: </p>
+                            <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
+                            <p>Kiểu kết nối: </p>
+                            <input type="text" value={kieuKetNoi} onChange={(e) => setKieuKetNoi(e.target.value)} />
+                            <p>Nhu cầu: </p>
+                            <input type="text" value={demand} onChange={(e) => setDemand(e.target.value)} />
+                            <p>Kiểu cầm: </p>
+                            <input type="text" value={kieuCam} onChange={(e) => setKieuCam(e.target.value)} />
+                            <p>Số nút bấm: </p>
+                            <input type="text" value={soNutBam} onChange={(e) => setSoNutBam(e.target.value)} />
+                            <p>Đèn LED: </p>
+                            <input type="text" value={denLed} onChange={(e) => setDenLed(e.target.value)} />
+                            <p>Kích thước: </p>
+                            <input type="text" value={kichThuoc} onChange={(e) => setKichThuoc(e.target.value)} />
+                            <p>Khối lượng: </p>
+                            <input type="text" value={weight} onChange={(e) => setWeight(e.target.value)} />
+                            <p>Độ phân giải: </p>
+                            <input type="text" value={doPhanGiai} onChange={(e) => setDoPhanGiai(e.target.value)} />
+                            <p>Dạng cảm biến: </p>
+                            <input type="text" value={dangCamBien} onChange={(e) => setDangCamBien(e.target.value)} />
+                            <p>Độ nhạy: </p>
+                            <input type="text" value={doNhay} onChange={(e) => setDoNhay(e.target.value)} />
+                            </>
+                            }
+                            {type === 'ram' &&
+                            <>
+                            <p>Màu sắc: </p>
+                            <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
+                            <p>Thế hệ: </p>
+                            <input type="text" value={theHe} onChange={(e) => setTheHe(e.target.value)} />
+                            <p>Bus: </p>
+                            <input type="text" value={bus} onChange={(e) => setBus(e.target.value)} />
+                            <p>Đèn LED: </p>
+                            <input type="text" value={denLed} onChange={(e) => setDenLed(e.target.value)} />
+                            <p>Loại hàng: </p>
+                            <input type="text" value={loaiHang} onChange={(e) => setLoaiHang(e.target.value)} />
+                            <p>Part-Number: </p>
+                            <input type="text" value={partNumber} onChange={(e) => setPartNumber(e.target.value)} />
+                            <p>Nhu cầu: </p>
+                            <input type="text" value={demand} onChange={(e) => setDemand(e.target.value)} />
+                            <p>Dung lượng: </p>
+                            <input type="text" value={storage} onChange={(e) => setStorage(e.target.value)} />
+                            <p>Voltage: </p>
+                            <input type="text" value={vol} onChange={(e) => setVol(e.target.value)} />
+                            </>
+                            }
+                            {type === 'headphone' &&
+                            <>
+                            <p>Tần số: </p>
+                            <input type="text" value={tanSo} onChange={(e) => setTanSo(e.target.value)} />
+                            <p>Kết nối: </p>
+                            <input type="text" value={connect} onChange={(e) => setConnect(e.target.value)} />
+                            <p>Kiểu kết nối: </p>
+                            <input type="text" value={kieuKetNoi} onChange={(e) => setKieuKetNoi(e.target.value)} />
+                            <p>Màu sắc: </p>
+                            <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
+                            <p>Đèn LED: </p>
+                            <input type="text" value={denLed} onChange={(e) => setDenLed(e.target.value)} />
+                            <p>Microphone: </p>
+                            <input type="text" value={microphone} onChange={(e) => setMicrophone(e.target.value)} />
+                            <p>Khối lượng: </p>
+                            <input type="text" value={weight} onChange={(e) => setWeight(e.target.value)} />
+                            </>
+                            }
+                            <p>Ngày cập nhật (năm-tháng-ngày) (2024-01-13) : </p>
+                            <input type="text" value={dateUpdate} onChange={(e) => setDateUpdate(e.target.value)} />
                             <p>Type: </p>
                             <input type="text" value={typeAdd} onChange={(e) => setTypeAdd(e.target.value)} />
                             <p>Link ảnh:</p>
