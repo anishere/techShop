@@ -53,12 +53,16 @@ function header() {
         if (e.keyCode === 13) {
             dispatch(searchProd(e.target.value))
             navigate('prodWithSearch')
-        }
+        } 
     }
 
     const handleSearch = () => {
         dispatch(searchProd(search))
         navigate('prodWithSearch')
+    }
+
+    const resetSearch = () => {
+        setSearch('')
     }
 
     return (
@@ -81,20 +85,20 @@ function header() {
                 <div className="d-md-flex justify-content-evenly collapse navbar-collapse" id="navbarSupportedContent">
                     <nav className='nav-links'>
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item ms-3 mx-md-3">
+                            <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
                                 <Link to={'/'} className={location.pathname === '/' ? 'nav-link active' : 'nav-link'}>Trang chủ</Link>
                             </li>
-                            <li className="nav-item ms-3 mx-md-3">
+                            <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
                                 <Link to={'shop'} className={location.pathname === '/shop' ? 'nav-link active' : 'nav-link'}>Sản phẩm</Link>
                             </li>
-                            <li className="nav-item ms-3 mx-md-3">
+                            <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
                                 <Link to={'about'} className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>Giới thiệu</Link>
                             </li>
-                            <li className="nav-item ms-3 mx-md-3">
+                            <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
                                 <Link to={'contact'} className={location.pathname === '/contact' ? 'nav-link active' : 'nav-link'}>Liên hệ</Link>
                             </li>
                             {(isAuth || isLoggedIn) && 
-                            <li className="nav-item ms-3 mx-md-3">
+                            <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
                                 <Link to={'admin'} className={location.pathname === '/admin' ? 'nav-link active' : 'nav-link'}>Admin</Link>
                             </li>}
                         </ul>

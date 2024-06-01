@@ -1,21 +1,48 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import { axiosCus } from "../axios/axios";
-import { URLsearch } from "../URL/url";
+import { URLsearch, URLsearchCPU, URLsearchHeadPhone, URLsearchKeyBoard, URLsearchMouse, URLsearchRAM } from "../URL/url";
 import { useDispatch, useSelector } from "react-redux";
 import { UpInfoProd, addItem } from "../redux/detailSlice";
 import { Link } from "react-router-dom";
 
 function prodWitchSearch() {
     const dispatch = useDispatch()
-    const [listProds, setListProds] = useState();
+    const [listProds, setListProds] = useState([]);
     const searchName = useSelector((state) => state.search.search)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                    const res = await axiosCus.get(`${URLsearch}${searchName}`);
-                    setListProds(res.listproducts)
+                const res = await axiosCus.get(`${URLsearch}${searchName}`);
+                if (res && res.listproducts) {
+                    setListProds(prevListProds => [...prevListProds, ...res.listproducts]);
+                }
+
+                const resCPU = await axiosCus.get(`${URLsearchCPU}${searchName}`);
+                if (res && resCPU.listcpu) {
+                    setListProds(prevListProds => [...prevListProds, ...resCPU.listcpu]);
+                }
+
+                const resKeyBoard = await axiosCus.get(`${URLsearchKeyBoard}${searchName}`);
+                if (res && resKeyBoard.listKeyBoard) {
+                    setListProds(prevListProds => [...prevListProds, ...resKeyBoard.listKeyBoard]);
+                }
+
+                const resMouse = await axiosCus.get(`${URLsearchMouse}${searchName}`);
+                if (res && resMouse.listMouse) {
+                    setListProds(prevListProds => [...prevListProds, ...resMouse.listMouse]);
+                }
+
+                const resRAM = await axiosCus.get(`${URLsearchRAM}${searchName}`);
+                if (res && resRAM.listram) {
+                    setListProds(prevListProds => [...prevListProds, ...resRAM.listram]);
+                }
+
+                const resHeadPhone = await axiosCus.get(`${URLsearchHeadPhone}${searchName}`);
+                if (res && resHeadPhone.listTaiNghe) {
+                    setListProds(prevListProds => [...prevListProds, ...resHeadPhone.listTaiNghe]);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -30,10 +57,10 @@ function prodWitchSearch() {
     //buy
     const ids = useSelector(state => state.prod.ids)
 
-    const handleAddItem = (id) => {
-        dispatch(addItem(id))
+    const handleAddItem = (id, type) => {
+        dispatch(addItem({productId: id, prodsType: type}))
     }
-
+    
     console.log(listProds)
  
     return (<>
@@ -65,7 +92,7 @@ function prodWitchSearch() {
                 {listProds && listProds.length > 0 ? (
                     listProds.map((prod) => {
                         return (
-                            <div key={prod.productID} className="card col-md-3 col-10 mx-auto my-2 newProds-item">
+                            <div key={`${prod.productID}${prod.type}`} className="card col-md-3 col-10 mx-auto my-2 newProds-item">
                                 <div className="mt-3 newProds-img">
                                     <img className="img-fluid" src={prod.image}  alt="new products img"/>
                                 </div>
@@ -73,8 +100,8 @@ function prodWitchSearch() {
                                     <h6>{prod.brand}</h6>
                                     <Link to={'../detail'} className="text-white" onClick={() => handleSelectProd(prod.productID, prod.type)}><h6 className="card-title">{prod.productName}</h6></Link>
                                     <p className="card-text mb-1 newProds-price">{(prod.price - (prod.price * prod.discount)).toLocaleString('vi-VN')}đ <span className="newProds-priceOld"><strike>{prod.price.toLocaleString('vi-VN')}đ</strike></span></p>
-                                    <Link onClick={() => {handleAddItem(prod.productID)}} href="" className="btn my-2">Mua ngay
-                                    { ids[prod.productID] > 0 && <span>&nbsp;({ids[prod.productID]})</span>}
+                                    <Link onClick={() => {handleAddItem(prod.productID, prod.type)}} href="" className="btn my-2">Mua ngay
+                                    { ids && ids[prod.type][prod.productID] > 0 && <span>&nbsp;({ids[prod.type][prod.productID]})</span>}
                                     </Link>
                                 </div>
                             </div>

@@ -3,7 +3,7 @@
 import Table from 'react-bootstrap/Table';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
-import { URLCPU, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
+import { URLCPU, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLsearch, URLsearchCPU, URLsearchHeadPhone, URLsearchKeyBoard, URLsearchMouse, URLsearchRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
 import { infoShop, about, allOrders, feedBack } from '.././URL/url';
 import ReactPaginate from 'react-paginate';
 import { UpInfoProd } from '../redux/detailSlice';
@@ -17,6 +17,8 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 
 import { useSelector } from 'react-redux'
+import { searchProd } from '../redux/searchSlice';
+import { IoSearch } from 'react-icons/io5';
 
 function admin() {
 
@@ -43,6 +45,7 @@ function admin() {
     }, []) 
 
     const handleSelectURL = (URL, type) => {
+        setSearch('')
         setURL(URL)
         setType(type)
         setSelected(!selected)
@@ -127,9 +130,41 @@ function admin() {
 
     const handleSelectPage = (e) => {
         if(type === 'lap' || type === 'pc') {
-            setURL(`ProductsPCLap/GetLaptops?page=${e.selected+1}&pageSize=20`)
+            if(searchName === ''){
+                setURL(`ProductsPCLap/GetLaptops?page=${e.selected+1}&pageSize=20`)
+            } else {
+                setURL(`ProductsPCLap/SearchProducts?keyword=${searchName}&page=${e.selected+1}&pageSize=20`)
+            }
         } else if (type === 'cpu') {
-            setURL(`ProductsCPU/ListCPU?page=${e.selected+1}&pageSize=20`)
+            if(searchName === ''){
+                setURL(`ProductsCPU/ListCPU?page=${e.selected+1}&pageSize=20`)
+            } else {
+                setURL(`ProductsCPU/SearchCPUs?keyword=${searchName}&page=${e.selected+1}&pageSize=20`)
+            }
+        } else if (type === 'keyboard') {
+            if(searchName === ''){
+                setURL(`ProductsKeyBoard/ListKeyBoard?page=${e.selected+1}&pageSize=20`)
+            } else {
+                setURL(`ProductsKeyBoard/SearchKeyboards?keyword=${searchName}&page=${e.selected+1}&pageSize=20`)
+            }
+        } else if (type === 'mouse') {
+            if(searchName === ''){
+                setURL(`ProductsMouse/ListMouse?page=${e.selected+1}&pageSize=20`)
+            } else {
+                setURL(`ProductsMouse/SearchMouse?keyword=${searchName}&page=${e.selected+1}&pageSize=20`)
+            }
+        } else if (type === 'ram') {
+            if(searchName === ''){
+                setURL(`ProductsRAM/ListRAM?page=${e.selected+1}&pageSize=20`)
+            } else {
+                setURL(`ProductsRAM/SearchRAM?keyword=${searchName}&page=${e.selected+1}&pageSize=20`)
+            }
+        } else if (type === 'headphone') {
+            if(searchName === ''){
+                setURL(`ProductsTaiNghe/ListTaiNghe?page=${e.selected+1}&pageSize=20`)
+            } else {
+                setURL(`ProductsTaiNghe/SearchTaiNghe?keyword=${searchName}&page=${e.selected+1}&pageSize=20`)
+            }
         }
     }
 
@@ -450,7 +485,7 @@ function admin() {
           // Xử lý lỗi
           console.error("Error updating product:", error);
         }
-      };  
+      };   
 
     const handleDeleteProduct = async (id) => {
         try {
@@ -725,6 +760,53 @@ function admin() {
 
     const formatNumber = (number) => parseFloat(number).toLocaleString('vi-VN');
 
+    //Search
+    const [search, setSearch] = useState()
+    const listenSearch = (e) => {
+        if (e.keyCode === 13) {
+            dispatch(searchProd(e.target.value))
+        } 
+    }
+    const handleSearch = () => {
+        dispatch(searchProd(search))
+    }
+    const searchName = useSelector((state) => state.search.search)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if(type === 'lap') {
+                    const res = await axiosCus.get(`${URLsearch}${searchName}`);
+                    setListRes(res.listproducts)
+                    setTotalProds(res.totalCount)
+                } else if (type === 'cpu') {
+                    const res = await axiosCus.get(`${URLsearchCPU}${searchName}`);
+                    setListRes(res.listcpu)
+                    setTotalProds(res.totalCount)
+                } else if (type === 'keyboard') {
+                    const res = await axiosCus.get(`${URLsearchKeyBoard}${searchName}`);
+                    setListRes(res.listKeyBoard)
+                    setTotalProds(res.totalCount)
+                } else if (type === 'mouse') {
+                    const res = await axiosCus.get(`${URLsearchMouse}${searchName}`);
+                    setListRes(res.listMouse)
+                    setTotalProds(res.totalCount)
+                } else if (type === 'ram') {
+                    const res = await axiosCus.get(`${URLsearchRAM}${searchName}`);
+                    setListRes(res.listram)
+                    setTotalProds(res.totalCount)
+                } else if (type === 'headphone') {
+                    const res = await axiosCus.get(`${URLsearchHeadPhone}${searchName}`);
+                    setListRes(res.listTaiNghe)
+                    setTotalProds(res.totalCount)
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [searchName])
+
     return (<>
         <div className="container-xxl mb-5">
         <div className="admin-button mb-5">
@@ -754,6 +836,10 @@ function admin() {
 
             <button onClick={() => setShowPass(true)} className='btn btn-primary mx-4'>Thay đổi mật khẩu</button>
             <button onClick={() => handleLogout()} className='btn btn-warning' >Đăng xuất</button>
+            <div className="d-flex col-4 my-2" >
+                <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Tìm kiếm"/>
+                <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type=""><IoSearch /></button>
+            </div>
 
             <Modal
                 className='text-black'

@@ -106,6 +106,11 @@ export const URLaddFeedBack = 'Message/AddMess'
 
 //Search
 export const URLsearch = 'ProductsPCLap/SearchProducts?keyword='
+export const URLsearchCPU = 'ProductsCPU/SearchCPUs?keyword='
+export const URLsearchKeyBoard = 'ProductsKeyBoard/SearchKeyboards?keyword='
+export const URLsearchMouse = 'ProductsMouse/SearchMouse?keyword='
+export const URLsearchRAM = 'ProductsRAM/SearchRAM?keyword='
+export const URLsearchHeadPhone = 'ProductsTaiNghe/SearchTaiNghe?keyword='
 
 //Get all brands
 export const URLBrandsLap = 'ProductsPCLap/GetBrands'
