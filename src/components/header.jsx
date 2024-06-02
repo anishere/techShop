@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchProd } from '../redux/searchSlice';
 import { IoSearch } from "react-icons/io5";
 
+//import Cartmini from './cartmini';
+
 function header() {
     const location = useLocation()
 
@@ -115,6 +117,13 @@ function header() {
                         <Link to={'cart'} className='sec-cart position-relative ms-3 ms-md-0 mx-md-2 d-flex'>
                             <BsBag className='fs-3 mx-2 mx-md-2 mb-md-2'/>
                             {totalItems > 0 && <p className='text-center totalItems'>{totalItems}</p>}
+                            {/* <div className='cartMini'>
+                            {totalItems > 0 &&
+                            <>
+                                <Cartmini></Cartmini>
+                            </>          
+                            }    
+                            </div>                 */}
                         </Link>
                 </div>
             </div>
