@@ -39,9 +39,11 @@ function admin() {
 
     useEffect(() => {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        if(isLoggedIn !== true)
+        //const isUser = localStorage.getItem('isUser') === 'true';
+        if(isLoggedIn !== true){
             if(isAuth === false)
                 navigate('../login')
+        }
     }, []) 
 
     const handleSelectURL = (URL, type) => {
@@ -755,6 +757,7 @@ function admin() {
 
     const handleLogout = () => {
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('isUser');
         window.location.reload();
     }
 

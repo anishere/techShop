@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchProd } from '../redux/searchSlice';
 import { IoSearch } from "react-icons/io5";
-
+import { IoMdLogOut } from "react-icons/io";
 //import Cartmini from './cartmini';
 
 function header() {
@@ -46,6 +46,26 @@ function header() {
     //check auth
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isUser = localStorage.getItem('isUser') === 'true';
+    const idTaiKhoan = useSelector((state) => state.auth.idTaiKhoan)
+    const [infoUser, setInfoUser] = useState();
+
+      useEffect(() => {
+        if(isUser === true) {
+            const fetchData = async () => {
+                const res = await axiosCus.get(`Account/account/${idTaiKhoan}`)
+                setInfoUser(res)
+            }
+            fetchData();    
+        }
+      },[idTaiKhoan, isUser, infoUser])
+
+      
+      const handleLogOut = () => {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('isUser');
+        window.location.reload();
+      }
 
     //Search
     const navigate = useNavigate()
@@ -111,19 +131,18 @@ function header() {
                     </div>
                 </div>
                 <div className="nav-links-nav col-md-3 d-md-flex align-items-center justify-content-end">
-                        {/* <Link to={'login'} className='mx-md-2 d-flex'>  <VscAccount className='fs-md-3 fs-2 mx-2 mx-md-2'/>
-                            <p>Account</p>
-                        </Link> */}
+                        {(isUser && isUser === true) && 
+                        <>
+                            <div className='me-2'>
+                                <p>Xin chào: { infoUser && infoUser.userName }</p>
+                            </div>
+                            <div><Link to={'infoUser'}><img className='img-avatar mx-2 mb-1' src={infoUser && infoUser.image} alt="" /></Link></div>
+                             <i onClick={() => handleLogOut()} className='mb-2 me-4 fs-3 icon-logout'><IoMdLogOut /></i>
+                        </>
+                        }
                         <Link to={'cart'} className='sec-cart position-relative ms-3 ms-md-0 mx-md-2 d-flex'>
                             <BsBag className='fs-3 mx-2 mx-md-2 mb-md-2'/>
                             {totalItems > 0 && <p className='text-center totalItems'>{totalItems}</p>}
-                            {/* <div className='cartMini'>
-                            {totalItems > 0 &&
-                            <>
-                                <Cartmini></Cartmini>
-                            </>          
-                            }    
-                            </div>                 */}
                         </Link>
                 </div>
             </div>

@@ -12,6 +12,7 @@ import Payment from './pages/payment'
 import Admin from './pages/admin'
 import DetailUpdate from './pages/detailUpdate'
 import ProdWitchSearch from './pages/prodWithSearch'
+import InfoUser from './pages/infoUser'
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -62,6 +63,7 @@ function App() {
             <Route path='cart' element={<Cart />}/>
             <Route path='payment' element={<Payment/>} />
             <Route path='admin' element={<Admin/>}/>
+            <Route path='infoUser' element={<InfoUser/>}/>
           </Route>
         </Routes>
         <ToastContainer />

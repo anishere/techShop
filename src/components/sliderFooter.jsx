@@ -91,7 +91,6 @@ const Sliders = () => {
         <div className='slideItem' key={index}>
           <img src={slide.image} alt="slider" key={index} className="image" />
             <div className='slideItems-detail'>
-                <h6>Vô vàng quà tặng</h6>
                 <Link to={'shop'} >Mua ngay</Link>
             </div>
         </div>
