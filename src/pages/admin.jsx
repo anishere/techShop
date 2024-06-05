@@ -3,7 +3,7 @@
 import Table from 'react-bootstrap/Table';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
-import { URLBlog, URLCPU, URLDeleteAccount, URLDeleteBlog, URLGetAllAccounts, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLsearch, URLsearchCPU, URLsearchHeadPhone, URLsearchKeyBoard, URLsearchMouse, URLsearchRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
+import { URLAddBlog, URLBlog, URLCPU, URLDeleteAccount, URLDeleteBlog, URLGetAllAccounts, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLUpdateBlogs, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLsearch, URLsearchCPU, URLsearchHeadPhone, URLsearchKeyBoard, URLsearchMouse, URLsearchRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
 import { infoShop, about, allOrders, feedBack } from '.././URL/url';
 import ReactPaginate from 'react-paginate';
 import { UpInfoProd } from '../redux/detailSlice';
@@ -142,8 +142,6 @@ function admin() {
         fetchData();
     }, [URL, type]);
 
-    console.log(listRes, type);
-
     const handleSelectPage = (e) => {
         if(type === 'lap' || type === 'pc') {
             if(searchName === ''){
@@ -247,6 +245,12 @@ function admin() {
     //HeadPhone
     const [tanSo, setTanSo] = useState()
     const [microphone, setMicrophone] = useState()
+    //Blog
+    const [tenBlog, setTenBlog] = useState();
+    const [imageBlog, setImageBlog] = useState();
+    const [noiDungBlog, setNoiDungBlog] = useState();
+    const [nguoiViet, setNguoiViet] = useState();
+    const [ngayViet, setNgayViet] = useState();
 
     const [dateUpdate, setDateUpdate] = useState()
     const [hot, setHot] = useState()
@@ -900,8 +904,8 @@ function admin() {
             const response = await axiosCus.post(`Order/UpdateOrderStatus?orderId=${orderId}&newStatus=${statusOrder}`);
             // Xử lý dữ liệu trả về nếu cần thiết
             console.log(`Order/UpdateOrderStatus?orderId=${orderId}&newStatus=${statusOrder}`)
-            if (response.StatusCode === 200) {
-                toast.success(response.data.StatusMessage, {
+            if (response.statusCode === 200) {
+                toast.success(response.statusMessage, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -913,7 +917,7 @@ function admin() {
                 });
                 location.reload();
             } else {
-                toast.error(response.StatusMessage, {
+                toast.error(response.statusMessage, {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -941,6 +945,36 @@ function admin() {
         handleCloseStatusOrder();
     };
 
+    const handleAddBlog = async () => {
+        try {
+            const response = await axiosCus.post(URLAddBlog, {
+                tenBlog: tenBlog,
+                detail: noiDungBlog,
+                image: imageBlog,
+                nguoiViet: nguoiViet,
+                ngayViet: new Date(ngayViet).toISOString(),
+            });
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response.statusCode);
+            if(response.statusCode === 200) {
+                toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                  location.reload();
+            }
+          } catch (error) {
+            // Xử lý lỗi
+            console.error("Error updating product:", error);
+          }
+    }
+
     const handleDeleteBlog = async (id) => {
         if(confirm('Sau khi xóa sẽ không thể khôi phục bạn chắc chứ')) {
             try {
@@ -965,9 +999,83 @@ function admin() {
             }
     }
 
-    const handleEditBlog = () => {
-
+    const [showBlogForm, setShowBlogForm] = useState(false);
+    const handleCloseBlogForm = () => setShowBlogForm(false);
+    const handleShowBlogForm = () => setShowBlogForm(true);
+    const [editBlog, setEditBlog] = useState(false);
+    const [idBlog, setIdBlog] = useState(null);
+    const handleEditBlog = (id) => {
+        setEditBlog(!editBlog);
+        setIdBlog(id);
+        handleShowBlogForm();
     }
+
+    const submitBlog = async () => {
+        try {
+            const response = await axiosCus.put(URLUpdateBlogs, {
+                id: idBlog,
+                tenBlog: tenBlog,
+                detail: noiDungBlog,
+                image: imageBlog,
+                nguoiViet: nguoiViet,
+                ngayViet: new Date(ngayViet).toISOString(),
+            });
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response)
+            if (response.statusCode === 200) {
+                toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                location.reload();
+            } else {
+                toast.error(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }
+        } catch (error) {
+            // Xử lý lỗi
+            console.error("Error updating product:", error);
+            toast.error("An error occurred while updating the order.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        }
+        handleCloseBlogForm();
+    }
+
+    useEffect(() => {
+        // Kiểm tra xem prod có tồn tại không
+        if (listRes && type === 'blogs') {
+            const blog = listRes.find(blog => blog.id === idBlog)
+            if(blog && editBlog === true) {
+            setTenBlog(blog.tenBlog || '');
+            setNoiDungBlog(blog.detail || '');
+            setImageBlog(blog.image || '');
+            setNguoiViet(blog.nguoiViet || '');
+            setNgayViet(blog.ngayViet || '');
+            }
+        }
+      }, [listRes, type, idBlog]);
 
     return (<>
         <div className="container-fluid mb-5">
@@ -1344,8 +1452,8 @@ function admin() {
                                     <td><p>{item.tenBlog}</p></td>
                                     <td><p>{item.image}</p></td>
                                     <td><p>{item.detail}</p></td>
-                                    <td><p>{item.NguoiViet}</p></td>
-                                    <td><p>{item.NgayViet}</p></td>
+                                    <td><p>{item.nguoiViet}</p></td>
+                                    <td><p>{item.ngayViet}</p></td>
                                     <td><button onClick={() => handleEditBlog(item.id)} className='btn btn-danger'>Chỉnh</button></td>
                                     <td><button onClick={() => handleDeleteBlog(item.id)} className='btn btn-danger'>Xóa</button></td>
                                     </>
@@ -1549,11 +1657,22 @@ function admin() {
                     <div className="col-12 d-flex flex-column justify-content-between mx-auto pe-0">
                         <div className="detailUpdate card p-4 col-md-12">
                         { type === 'blogs' &&
-                            ''
+                        <>
+                        <p>Tên Blog:</p>
+                        <input value={tenBlog} onChange={(e) => setTenBlog(e.target.value)} type="text" name="" id="" />
+                        <p>Ảnh bìa:</p>
+                        <input value={imageBlog} onChange={(e) => setImageBlog(e.target.value)} type="text" name="" id="" />
+                        <p>Nội dung:</p>
+                        <textarea value={noiDungBlog} onChange={(e) => setNoiDungBlog(e.target.value)} type="text" name="" id="" />
+                        <p>TacGia:</p>
+                        <input value={nguoiViet} onChange={(e) => setNguoiViet(e.target.value)} type="text" name="" id="" />
+                        <p>Ngày Viết:</p>
+                        <input value={ngayViet} onChange={(e) => setNgayViet(e.target.value)} type="date" name="" id="" />
+                        </>
                         }
                         {type !== 'blogs' &&
                         <>
-                        <p>Bạn đang thêm sản phầm kiểu: <span className='text-primary'>{type}</span></p>
+                            <p>Bạn đang thêm sản phầm kiểu: <span className='text-primary'>{type}</span></p>
                             <p className='text-danger'>*Lưu ý: Nhập hết tất cả thông tin</p>
                             <p>Tên: </p>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
@@ -1725,12 +1844,47 @@ function admin() {
                 <Button variant="secondary" onClick={handleClose}>
                     Đóng
                 </Button>
+                {type !== 'blogs' && 
                 <Button variant="primary" onClick={handleAddProd}>
                     Thêm
                 </Button>
+                }
+                {type === 'blogs' &&
+                <Button variant="primary" onClick={() => handleAddBlog()}>
+                Thêm
+                </Button>
+                }
                 </Modal.Footer>
-            </Modal>           
+            </Modal>      
 
+                 {/*Blog  */}
+            <Modal className='text-black' fullscreen={true} show={showBlogForm} onHide={handleCloseBlogForm}>
+                <Modal.Header closeButton>
+                <Modal.Title>Viết Blog</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <>
+                        <p>Tên Blog:</p>
+                        <input value={tenBlog} onChange={(e) => setTenBlog(e.target.value)} type="text" name="" id="" />
+                        <p>Ảnh bìa:</p>
+                        <input value={imageBlog} onChange={(e) => setImageBlog(e.target.value)} type="text" name="" id="" />
+                        <p>Nội dung:</p>
+                        <textarea className='w-100' value={noiDungBlog} onChange={(e) => setNoiDungBlog(e.target.value)} type="text" name="" id="" />
+                        <p>TacGia:</p>
+                        <input value={nguoiViet} onChange={(e) => setNguoiViet(e.target.value)} type="text" name="" id="" />
+                        <p>Ngày Viết:</p>
+                        <input value={ngayViet} onChange={(e) => setNgayViet(e.target.value)} type="date" name="" id="" />
+                        </>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseBlogForm}>
+                    Thoát
+                </Button>
+                <Button variant="primary" onClick={submitBlog}>
+                    Đăng
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
         </div>
         </div>

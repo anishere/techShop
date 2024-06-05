@@ -127,7 +127,7 @@ export const URLGetAllAccounts = 'Account/GetAllAccounts'
 export const URLDeleteAccount = 'Account/DeleteAccount/'
 
 //Blogs
-export const URLAddBlog = 'Account/Blogs'
+export const URLAddBlog = 'Blog/AddBlog'
 export const URLBlog = 'Blog/GetAllBlogs'
 export const URLUpdateBlogs = 'Blog/UpdateBlog'
 export const URLDeleteBlog = 'Blog/DeleteBlog/'
