@@ -119,3 +119,15 @@ export const URLBrandsRAM = 'ProductsRAM/GetAllRAMBrands'
 export const URLBrandsKeyBoard = 'ProductsKeyBoard/GetAllKeyboardBrands'
 export const URLBrandsMouse = 'ProductsMouse/GetAllMouseBrands'
 export const URLBrandsHeadPhone = 'ProductsTaiNghe/GetAllTaiNgheBrands'
+
+//Get accounts 
+export const URLGetAllAccounts = 'Account/GetAllAccounts'
+
+//Delete accounts
+export const URLDeleteAccount = 'Account/DeleteAccount/'
+
+//Blogs
+export const URLAddBlog = 'Account/Blogs'
+export const URLBlog = 'Blog/GetAllBlogs'
+export const URLUpdateBlogs = 'Blog/UpdateBlog'
+export const URLDeleteBlog = 'Blog/DeleteBlog/'

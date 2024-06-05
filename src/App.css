@@ -92,6 +92,10 @@ th {
   vertical-align: -4px;
 }
 
+.sec-login {
+  margin-bottom: 1px;
+}
+
 .active {
   fonts-weight: 600;
   color: #cca27e !important;
@@ -801,6 +805,12 @@ a.page-link {
   border-radius: 0.75rem;
 }
 
+.cod-text {
+  padding: 6px;
+  border-radius: 3px;
+  background-color: green;
+}
+
 /* Payment end */
 
 /* /* About start */
@@ -1158,10 +1168,52 @@ button:disabled {
   width: 80%;
 }
 
+.detail h3 {
+  text-align: center;
+}
+
 .detail p {
   width: 100%;
   margin: 12px 0;
   border-bottom: 0.2px solid black;
+}
+
+.editProfile {
+  cursor: pointer;
+}
+
+.changePass {
+  cursor: pointer;
+}
+
+.changePass:hover,
+.editProfile:hover {
+  color: green;
+}
+
+.group-updateInfo {
+  width: 100%;
+  margin: auto;
+}
+
+.group-updateInfo p {
+  width: 100%;
+  margin: auto;
+}
+
+.blog-section img {
+  border-radius: 3px;
+}
+
+.blog-section p {
+  text-align: justify;
+  font-size: 1rem;
+}
+
+.banner-blogs {
+  background: url("./assets/imgs/bannerfooter/footer2.jpg");
+  background-size: cover;
+  background-position: bottom;
 }
 
 /* infoUser End */

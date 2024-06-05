@@ -3,7 +3,7 @@
 import Table from 'react-bootstrap/Table';
 import { axiosCus } from '../axios/axios';
 import { useEffect, useState } from 'react';
-import { URLCPU, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLsearch, URLsearchCPU, URLsearchHeadPhone, URLsearchKeyBoard, URLsearchMouse, URLsearchRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
+import { URLBlog, URLCPU, URLDeleteAccount, URLDeleteBlog, URLGetAllAccounts, URLKeyBoard, URLLap, URLMouse, URLRAM, URLTaiNghe, URLaddProd, URLaddProdCPU, URLaddProdHeadPhone, URLaddProdKeyBoard, URLaddProdMouse, URLaddProdRAM, URLchangePass, URLdeleteFeedback, URLdeleteOrder, URLdeleteProd, URLdeleteProdCPU, URLdeleteProdHeadPhone, URLdeleteProdKeyBoard, URLdeleteProdMouse, URLdeleteProdRAM, URLsearch, URLsearchCPU, URLsearchHeadPhone, URLsearchKeyBoard, URLsearchMouse, URLsearchRAM, URLupdateAbout, URLupdateInfoShop } from '.././URL/url'
 import { infoShop, about, allOrders, feedBack } from '.././URL/url';
 import ReactPaginate from 'react-paginate';
 import { UpInfoProd } from '../redux/detailSlice';
@@ -85,7 +85,19 @@ function admin() {
                 {
                     setListRes(res.listMessage)
                     setTotalProds(0)
-                }         
+                }   
+                else if (type === 'accounts')
+                {
+                    setListRes(res.listaccounts)
+                    // let total = await axiosCus.get(URLtotalProd)
+                    // setTotalProds(total.totalCount)
+                }  
+                else if (type === 'blogs')
+                    {
+                        setListRes(res.listBlogs)
+                        // let total = await axiosCus.get(URLtotalProd)
+                        // setTotalProds(total.totalCount)
+                    }         
                 else if (type === 'lap' || type === 'pc')
                 {
                     setListRes(res.listproducts)
@@ -129,6 +141,8 @@ function admin() {
         };
         fetchData();
     }, [URL, type]);
+
+    console.log(listRes, type);
 
     const handleSelectPage = (e) => {
         if(type === 'lap' || type === 'pc') {
@@ -810,19 +824,167 @@ function admin() {
         fetchData();
     }, [searchName])
 
+    const handleDeleteAccount = async (id) => {
+        if(confirm('Sau khi xóa sẽ không thể khôi phục bạn chắc chứ')) {
+            try {
+                const response = await axiosCus.delete(`${URLDeleteAccount}${id}`);
+                // Xử lý dữ liệu trả về nếu cần thiết
+                console.log(response.statusCode);
+                toast.success(response.statusMessage, {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  });
+                location.reload();
+              } catch (error) {
+                // Xử lý lỗi
+                console.error("Error updating product:", error);
+              }
+            }
+    }
+
+    const [IdUser, setIdUser] = useState(null);
+    const handleEditPermission = async (id) => {
+        setIdUser(id);
+        handleShowPermission();
+    }
+    const [permission, setPermission] = useState('');
+    const [showEditPermission, setShowEditPermission] = useState(false);
+    const handleClosePermission = () => setShowEditPermission(false);
+    const handleShowPermission = () => setShowEditPermission(true);
+    const submit2 = async () => {
+        try {
+            const response = await axiosCus.put(`Account/UpdateRole?idTaiKhoan=${IdUser}&newRole=${permission}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(`Account/UpdateRole?idTaiKhoan=${IdUser}&newRole=${permission}`)
+            console.log(response.statusCode);
+            if(response.statusCode === 200) {
+                toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                  location.reload();
+            }
+          } catch (error) {
+            // Xử lý lỗi
+            console.error("Error updating product:", error);
+          }
+        handleClosePermission();
+    };
+
+
+    const [showStatusOrder, setShowStatusOrder] = useState(false);
+    const handleCloseStatusOrder = () => setShowStatusOrder(false);
+    const handleShowStatusOrder = () => setShowStatusOrder(true)
+    const [statusOrder, setStatusOrder] = useState('')
+    const [orderId, setOrderId] = useState(null); 
+
+    const handleUpdateOrder = (id) => {
+        setOrderId(id);
+        handleShowStatusOrder();
+    };
+
+    const submit = async () => {
+        try {
+            const response = await axiosCus.post(`Order/UpdateOrderStatus?orderId=${orderId}&newStatus=${statusOrder}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(`Order/UpdateOrderStatus?orderId=${orderId}&newStatus=${statusOrder}`)
+            if (response.StatusCode === 200) {
+                toast.success(response.data.StatusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                location.reload();
+            } else {
+                toast.error(response.StatusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }
+        } catch (error) {
+            // Xử lý lỗi
+            console.error("Error updating product:", error);
+            toast.error("An error occurred while updating the order.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        }
+        handleCloseStatusOrder();
+    };
+
+    const handleDeleteBlog = async (id) => {
+        if(confirm('Sau khi xóa sẽ không thể khôi phục bạn chắc chứ')) {
+            try {
+                const response = await axiosCus.delete(`${URLDeleteBlog}${id}`);
+                // Xử lý dữ liệu trả về nếu cần thiết
+                console.log(response.statusCode);
+                toast.success(response.statusMessage, {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  });
+                location.reload();
+              } catch (error) {
+                // Xử lý lỗi
+                console.error("Error updating product:", error);
+              }
+            }
+    }
+
+    const handleEditBlog = () => {
+
+    }
+
     return (<>
-        <div className="container-xxl mb-5">
+        <div className="container-fluid mb-5">
+        <div className=''>
         <div className="admin-button mb-5">
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(infoShop, 'infoShop')}>Thông tin shop</button>
-                <button className='btn btn-primary' onClick={() => handleSelectURL(about,'about')}>Trang giới thiệu</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(allOrders,'allOrders')}>Thông tin đặt hàng</button>
-                <button className='btn btn-primary' onClick={() => handleSelectURL(feedBack,'feedback')}>FeedBack</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLLap,'lap')}>LapTop</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLCPU,'cpu')}>CPU</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLMouse,'mouse')}>Mouse</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLKeyBoard,'keyboard')}>KeyBoard</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLRAM,'ram')}>RAM</button>
-                <button className='btn btn-primary mx-2' onClick={() => handleSelectURL(URLTaiNghe,'headphone')}>Tai Nghe</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(infoShop, 'infoShop')}>Thông tin shop</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(about,'about')}>Trang giới thiệu</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(allOrders,'allOrders')}>Thông tin đặt hàng</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLGetAllAccounts,'accounts')}>Quản lý tài khoản</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLBlog,'blogs')}>Quản lý Blogs</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(feedBack,'feedback')}>FeedBack</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLLap,'lap')}>LapTop</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLCPU,'cpu')}>CPU</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLMouse,'mouse')}>Mouse</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLKeyBoard,'keyboard')}>KeyBoard</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLRAM,'ram')}>RAM</button>
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLTaiNghe,'headphone')}>Tai Nghe</button>
         </div>
 
         <div className="admin-table">
@@ -834,11 +996,11 @@ function admin() {
             <span className='mx-2 text-capitalize'>Type: {type}</span>
 
             <Button variant="primary" onClick={handleShow}>
-                Thêm sản phẩm
+                {type === 'blogs' ? "Viết blog" : "Thêm sản phẩm"}
             </Button>
 
-            <button onClick={() => setShowPass(true)} className='btn btn-primary mx-4'>Thay đổi mật khẩu</button>
-            <button onClick={() => handleLogout()} className='btn btn-warning' >Đăng xuất</button>
+            {/* <button onClick={() => setShowPass(true)} className='btn btn-primary mx-4'>Thay đổi mật khẩu</button> */}
+            <button onClick={() => handleLogout()} className='btn ms-2 btn-warning' >Đăng xuất</button>
             <div className="d-flex col-4 my-2" >
                 <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Tìm kiếm"/>
                 <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type=""><IoSearch /></button>
@@ -891,12 +1053,17 @@ function admin() {
                         }
                         { type === 'allOrders' &&
                             <>
+                            <th>ID</th>
                             <th>SĐT</th>
                             <th>Tên</th>
                             <th>Địa chỉ</th>
+                            <th>Email</th>
+                            <th>Note</th>
                             <th>Đơn hàng</th>
                             <th>Tổng tiền</th>
-                            <th>Trãng thái</th>
+                            <th>Mã thanh toán</th>
+                            <th>Trạng thái</th>
+                            <th>Cập nhật</th>
                             <th>Xóa</th>
                             </>
                         }
@@ -906,6 +1073,31 @@ function admin() {
                             <th>Email</th>
                             <th>Tên</th>
                             <th>FeedBack</th>
+                            <th>Xóa</th>
+                            </>
+                        }
+                        { type === 'accounts' &&
+                            <>
+                            <th>ID Tài khoản</th>
+                            <th>Tên tài khoản</th>
+                            <th>Mật khẩu</th>
+                            <th>Email</th>
+                            <th>SDT</th>
+                            <th>Link avatar</th>
+                            <th>Quyền</th>
+                            <th>Phân quyền</th>
+                            <th>Xóa</th>
+                            </>
+                        }
+                        { type === 'blogs' &&
+                            <>
+                            <th>ID</th>
+                            <th>Tên Blog</th>
+                            <th>Hình ảnh</th>
+                            <th>Nội dung</th>
+                            <th>Người viết</th>
+                            <th>Ngày Viết</th>
+                            <th>Sửa</th>
                             <th>Xóa</th>
                             </>
                         }
@@ -1107,14 +1299,19 @@ function admin() {
                                 }
                                 { type === 'allOrders' &&
                                     <>
+                                    <td><p>{item.id}</p></td>
                                     <td><p>{item.phoneNumber}</p></td>
                                     <td><p>{item.name}</p></td>
                                     <td><p>{item.address}</p></td>
+                                    <td><p>{item.email}</p></td>
+                                    <td><p>{item.note}</p></td>
                                     <td>                         
                                         <p>{item.listCart}</p>
                                     </td>
                                     <td><p>{formatNumber(item.totalPrice)}</p></td>
+                                    <td><p>{item.codePayment}</p></td>
                                     <td><p>{item.status}</p></td>
+                                    <td><button onClick={() => handleUpdateOrder(item.id)} className='btn btn-primary'>Edit</button></td>
                                     <td><button onClick={() => handleDeleteOrder(item.id)} className='btn btn-danger'>Xóa</button></td>
                                     </>
                                 }
@@ -1125,6 +1322,32 @@ function admin() {
                                     <td><p>{item.ten}</p></td>
                                     <td><p>{item.messageDetail}</p></td>
                                     <td><button onClick={() => handleDeleteFeedback(item.id)} className='btn btn-danger'>Xóa</button></td>
+                                    </>
+                                }
+                                { type === 'accounts' &&
+                                    <>
+                                    <td><p>{item.idTaiKhoan}</p></td>
+                                    <td><p>{item.userName}</p></td>
+                                    <td><p>{item.password}</p></td>
+                                    <td><p>{item.email}</p></td>
+                                    <td><p>{item.sdt}</p></td>
+                                    <td><img src={item.image} alt="1" className='rounded-circle' height={'60px'} /></td>
+                                    <td><p>{item.phanQuyen}</p></td>
+                                    <td><button onClick={() => handleEditPermission(item.idTaiKhoan)} className='btn btn-danger'>Chỉnh</button></td>
+                                    <td><button onClick={() => handleDeleteAccount(item.idTaiKhoan)} className='btn btn-danger'>Xóa</button></td>
+                                                {/* Modal edit permission */}
+                                    </>
+                                }
+                                {type === 'blogs' &&
+                                    <>
+                                    <td><p>{item.id}</p></td>
+                                    <td><p>{item.tenBlog}</p></td>
+                                    <td><p>{item.image}</p></td>
+                                    <td><p>{item.detail}</p></td>
+                                    <td><p>{item.NguoiViet}</p></td>
+                                    <td><p>{item.NgayViet}</p></td>
+                                    <td><button onClick={() => handleEditBlog(item.id)} className='btn btn-danger'>Chỉnh</button></td>
+                                    <td><button onClick={() => handleDeleteBlog(item.id)} className='btn btn-danger'>Xóa</button></td>
                                     </>
                                 }
                                 {/* Nếu là Products */}
@@ -1235,7 +1458,7 @@ function admin() {
             </Table>
 
             {totalPages > 1 &&
-            <div className='d-flex justify-content-center'>
+            <div className='d-flex justify-content-center mt-2'>
             <ReactPaginate
             key={selected}
             nextLabel="next >"
@@ -1259,16 +1482,78 @@ function admin() {
             />
             </div>
             }
+
+            <Modal
+                show={showStatusOrder}
+                onHide={handleCloseStatusOrder}
+                backdrop="static"
+                keyboard={false}
+                className='text-black'
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Cập nhật trạng thái</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="form-check">
+                        <label className="form-label">Trạng thái:</label>
+                        <input value={statusOrder} onChange={(e) => setStatusOrder(e.target.value)} type="text" className="form-control"/>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseStatusOrder}>
+                        Thoát
+                    </Button>
+                    <Button onClick={() => submit()} variant="primary">Xác nhận</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal
+                show={showEditPermission}
+                onHide={handleClosePermission}
+                backdrop="static"
+                keyboard={false}
+                className='text-black'
+            >
+                <Modal.Header closeButton>
+                <Modal.Title>Thay đổi quyền</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <div className="form-check">
+                <input onClick={() => setPermission('true')} className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
+                <label onClick={() => setPermission('true')} className="form-check-label" htmlFor="flexRadioDefault1">
+                    Admin
+                </label>
+                </div>
+                <div className="form-check">
+                <input onClick={() => setPermission('false')} className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"/>
+                <label onClick={() => setPermission('false')} className="form-check-label" htmlFor="flexRadioDefault2">
+                    User
+                </label>
+                </div>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClosePermission}>
+                    Thoát
+                </Button>
+                <Button onClick={() => submit2()} variant="primary">Xác nhận</Button>
+                </Modal.Footer>
+            </Modal>
+
             {/* Model Prod*/}
             <Modal show={show} onHide={handleClose} fullscreen={true} className='text-black modal-Add'>
                 <Modal.Header closeButton>
-                <Modal.Title>Thêm sản phẩm</Modal.Title>
+                <Modal.Title>{type === 'blogs' ? "Viết blog" : 'Thêm sản phẩm'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <div className="row">
                     <div className="col-12 d-flex flex-column justify-content-between mx-auto pe-0">
                         <div className="detailUpdate card p-4 col-md-12">
-                            <p>Bạn đang thêm sản phầm kiểu: <span className='text-primary'>{type}</span></p>
+                        { type === 'blogs' &&
+                            ''
+                        }
+                        {type !== 'blogs' &&
+                        <>
+                        <p>Bạn đang thêm sản phầm kiểu: <span className='text-primary'>{type}</span></p>
                             <p className='text-danger'>*Lưu ý: Nhập hết tất cả thông tin</p>
                             <p>Tên: </p>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
@@ -1430,6 +1715,8 @@ function admin() {
                             <input type="text" value={image4} onChange={(e) => setImage4(e.target.value)} />
                             <p>Mô tả sản phẩm:</p>
                             <textarea className='col-12' type="text" value={des} onChange={(e) => setDes(e.target.value)} />
+                        </>
+                        }
                         </div>
                     </div>
                 </div>
@@ -1442,10 +1729,9 @@ function admin() {
                     Thêm
                 </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal>           
 
-            
-
+        </div>
         </div>
         </div>
     </>);

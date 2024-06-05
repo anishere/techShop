@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchProd } from '../redux/searchSlice';
 import { IoSearch } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
+import { FaUserCircle } from "react-icons/fa";
 //import Cartmini from './cartmini';
 
 function header() {
@@ -51,19 +52,20 @@ function header() {
     const [infoUser, setInfoUser] = useState();
 
       useEffect(() => {
-        if(isUser === true) {
+        if(isUser === true || isLoggedIn === true) {
             const fetchData = async () => {
                 const res = await axiosCus.get(`Account/account/${idTaiKhoan}`)
                 setInfoUser(res)
             }
             fetchData();    
         }
-      },[idTaiKhoan, isUser, infoUser])
+      },[idTaiKhoan, isUser, infoUser, isLoggedIn])
 
       
       const handleLogOut = () => {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('isUser');
+        navigate('../')
         window.location.reload();
       }
 
@@ -117,6 +119,9 @@ function header() {
                                 <Link to={'about'} className={location.pathname === '/about' ? 'nav-link active' : 'nav-link'}>Giới thiệu</Link>
                             </li>
                             <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
+                                <Link to={'blogs'} className={location.pathname === '/blogs' ? 'nav-link active' : 'nav-link'}>Blogs</Link>
+                            </li>
+                            <li onClick={() => resetSearch()} className="nav-item ms-3 mx-md-3">
                                 <Link to={'contact'} className={location.pathname === '/contact' ? 'nav-link active' : 'nav-link'}>Liên hệ</Link>
                             </li>
                             {(isAuth || isLoggedIn) && 
@@ -131,7 +136,7 @@ function header() {
                     </div>
                 </div>
                 <div className="nav-links-nav col-md-3 d-md-flex align-items-center justify-content-end">
-                        {(isUser && isUser === true) && 
+                        {((isUser && isUser === true) || (isLoggedIn && isLoggedIn === true))  && 
                         <>
                             <div className='me-2'>
                                 <p>Xin chào: { infoUser && infoUser.userName }</p>
@@ -139,6 +144,11 @@ function header() {
                             <div><Link to={'infoUser'}><img className='img-avatar mx-2 mb-1' src={infoUser && infoUser.image} alt="" /></Link></div>
                              <i onClick={() => handleLogOut()} className='mb-2 me-4 fs-3 icon-logout'><IoMdLogOut /></i>
                         </>
+                        }
+                        {!((isUser && isUser === true) || (isLoggedIn && isLoggedIn === true))&&
+                            <Link to={'login'} className='sec-cart sec-login position-relative ms-3 ms-md-0 mx-md-2 d-flex'>
+                                <FaUserCircle className='fs-3' />
+                            </Link>
                         }
                         <Link to={'cart'} className='sec-cart position-relative ms-3 ms-md-0 mx-md-2 d-flex'>
                             <BsBag className='fs-3 mx-2 mx-md-2 mb-md-2'/>
