@@ -20,6 +20,8 @@ import { useSelector } from 'react-redux'
 import { searchProd } from '../redux/searchSlice';
 import { IoSearch } from 'react-icons/io5';
 
+import CommonUtils from '../commonutils';
+
 function admin() {
 
     const dispatch = useDispatch()
@@ -90,13 +92,13 @@ function admin() {
                 {
                     setListRes(res.listaccounts)
                     // let total = await axiosCus.get(URLtotalProd)
-                    // setTotalProds(total.totalCount)
+                    setTotalProds(0)
                 }  
                 else if (type === 'blogs')
                     {
                         setListRes(res.listBlogs)
                         // let total = await axiosCus.get(URLtotalProd)
-                        // setTotalProds(total.totalCount)
+                        setTotalProds(0)
                     }         
                 else if (type === 'lap' || type === 'pc')
                 {
@@ -1077,6 +1079,12 @@ function admin() {
         }
       }, [listRes, type, idBlog]);
 
+    const handleExport = async () => {     
+        if(listRes){
+            await CommonUtils.exportExcel(listRes,"File Export","TechShop Export")
+        }
+    }
+
     return (<>
         <div className="container-fluid mb-5">
         <div className=''>
@@ -1109,6 +1117,7 @@ function admin() {
 
             {/* <button onClick={() => setShowPass(true)} className='btn btn-primary mx-4'>Thay đổi mật khẩu</button> */}
             <button onClick={() => handleLogout()} className='btn ms-2 btn-warning' >Đăng xuất</button>
+            <button onClick={() => handleExport()} className='btn mx-2 btn-primary' >Export</button>
             <div className="d-flex col-4 my-2" >
                 <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Tìm kiếm"/>
                 <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type=""><IoSearch /></button>

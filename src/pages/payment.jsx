@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Accordion from 'react-bootstrap/Accordion';
 import qrcode from '../assets/imgs/qrcode.jpg';
+import { toast } from "react-toastify";
 
 function payment() {
     const [SDT, setSDT] = useState('')
@@ -21,25 +22,18 @@ function payment() {
     const totalPrice = useSelector(state => state.prod.totalPrice)
     const listcart = useSelector(state => state.prod.ids)
 
-    const convertCartToArray = (cart) => {
-        let cartArray = [];
-        
-        Object.keys(cart).forEach(type => {
-          Object.keys(cart[type]).forEach(id => {
-            cartArray.push({
-              type: type,
-              id: id,
-              quantity: cart[type][id]
-            });
-          });
-        });
-        
-        return cartArray;
-      };
-    
-    const carttoDB = convertCartToArray(listcart)
-    
-    console.log(carttoDB);
+    let result = [];
+    for (let [key, value] of Object.entries(listcart)) {
+        if (Object.keys(value).length > 0) { // Kiểm tra nếu đối tượng không rỗng
+          let items = [];
+          for (let [id, quantity] of Object.entries(value)) {
+            items.push(`id: ${id} quantity: ${quantity}`);
+          }
+          result.push(`${key}| ${items.join(', ')}`);
+        }
+      }
+    let resultString = result.join('; ');
+    console.log(resultString);
 
     useEffect(() => {
         if(totalPrice <= 0)
@@ -58,17 +52,28 @@ function payment() {
                 note: note,
                 email: email,
                 codePayment: code,
-                listCart: JSON.stringify(carttoDB),
+                listCart: JSON.stringify(resultString),
                 totalPrice: totalPrice,
                 status: 'Đang xử lí',
             }); 
             
             // Xử lý dữ liệu trả về nếu cần thiết
-            console.log(response.statusCode);
             if (response.statusCode === 200) {
-                alert('Đặt hàng thành công. Shop sẽ liên hệ với bạn để xác nhận sớm nhất.');
-                window.location.reload();
-                window.location.href = '/';
+                toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+                    setTimeout(() => {
+                        navigate('../finalcheckout');
+                    }, 2000); 
+                // window.location.reload();
+                // window.location.href = '/';
             } else {
                 console.error("Error updating product:", response.data);
                 // Xử lý lỗi nếu cần thiết

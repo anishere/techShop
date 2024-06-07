@@ -14,6 +14,7 @@ import DetailUpdate from './pages/detailUpdate'
 import ProdWitchSearch from './pages/prodWithSearch'
 import InfoUser from './pages/infoUser'
 import Blogs from './pages/blogs'
+import FinalCheckout from './pages/finalCheckout'
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -66,6 +67,7 @@ function App() {
             <Route path='admin' element={<Admin/>}/>
             <Route path='infoUser' element={<InfoUser/>}/>
             <Route path='blogs' element={<Blogs/>}/>
+            <Route path='finalcheckout' element={<FinalCheckout/>}/>
           </Route>
         </Routes>
         <ToastContainer />
