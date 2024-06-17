@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react";
 import { BsDiscord, BsFacebook, BsGithub, BsSlack } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosCus } from "../axios/axios";
 import { URLgetALL, URLgetAllCPU, URLgetAllHeadPhone, URLgetAllKeyBoard, URLgetAllMouse, URLgetAllRAM } from "../URL/url";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearIds } from "../redux/detailSlice";
 
 
 function finalCheckout() {
@@ -60,9 +61,16 @@ function finalCheckout() {
 
     let totalPriceItems = 0;
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const handleClearCart = () => {
+        dispatch(clearIds());
+      };
+
     const handleBack = () => {
-        window.location.reload();
-        window.location.href = '/';
+        handleClearCart();
+        navigate('../')
     }
 
     return (
