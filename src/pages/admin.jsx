@@ -1085,22 +1085,165 @@ function admin() {
         }
     }
 
+
+    const [showVisible, setShowVisible] = useState(false);
+
+    const handleCloseVisible = () => setShowVisible(false);
+    const handleShowVisible = () => setShowVisible(true);
+    const handleEditVisible = (id) => {
+        setIdUser(id);
+        handleShowVisible();
+    }
+
+    const [checkboxes, setCheckboxes] = useState({
+        infoshop: false,
+        about: false,
+        orders: false,
+        accounts: false,
+        blogs: false,
+        feedback: false,
+        laptop: false,
+        cpu: false,
+        mouse: false,
+        keyboard: false,
+        ram: false,
+        headphone: false,
+        themsanpham: false,
+        export: false,
+    });
+
+    const handleFullVisible = () => {
+        const updatedCheckboxes = {};
+        for (const key in checkboxes) {
+            updatedCheckboxes[key] = true; // Chọn tất cả các checkbox
+        }
+        setCheckboxes(updatedCheckboxes);
+    };
+
+    const handleNoneVisible = () => {
+        const updatedCheckboxes = {};
+        for (const key in checkboxes) {
+            updatedCheckboxes[key] = false; 
+        }
+        setCheckboxes(updatedCheckboxes);
+    }
+
+    const handleCheckboxChange = (event) => {
+        const checkboxId = event.target.id;
+        const isChecked = event.target.checked;
+
+        setCheckboxes({
+            ...checkboxes,
+            [checkboxId]: isChecked
+        });
+    };
+
+    const submitVisible = async () => {
+        const binarizedValues = {};
+        Object.keys(checkboxes).forEach(key => {
+            binarizedValues[key] = checkboxes[key] ? '1' : '0';
+        });
+        // Lấy mảng các giá trị từ object và nối lại thành chuỗi
+        const visible = Object.values(binarizedValues).join('');
+
+        try {
+            const response = await axiosCus.put(`Account/UpdateVisible?idTaiKhoan=${IdUser}&visible=${visible}`);
+            // Xử lý dữ liệu trả về nếu cần thiết
+            console.log(response)
+            if (response.statusCode === 200) {
+                toast.success(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                location.reload();
+            } else {
+                toast.error(response.statusMessage, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }
+        } catch (error) {
+            // Xử lý lỗi
+            console.error("Error updating product:", error);
+            toast.error("An error occurred while updating the order.", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        }
+        handleCloseVisible();
+    }
+    const [visibleStatus, SetVisibleStatus] = useState('');
+    useEffect(() => {
+        const visibleLocal = localStorage.getItem('visible');
+        SetVisibleStatus(visibleLocal)
+        console.log(visibleStatus[0]);
+    }, [visibleStatus])
+
+    console.log(visibleStatus)
+
     return (<>
+    {visibleStatus && visibleStatus !== '00000000000000' &&
         <div className="container-fluid mb-5">
         <div className=''>
         <div className="admin-button mb-5">
+        {visibleStatus &&
+            <>
+            {visibleStatus[0] === '1' &&
                 <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(infoShop, 'infoShop')}>Thông tin shop</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(about,'about')}>Trang giới thiệu</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(allOrders,'allOrders')}>Thông tin đặt hàng</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLGetAllAccounts,'accounts')}>Quản lý tài khoản</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLBlog,'blogs')}>Quản lý Blogs</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(feedBack,'feedback')}>FeedBack</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLLap,'lap')}>LapTop</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLCPU,'cpu')}>CPU</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLMouse,'mouse')}>Mouse</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLKeyBoard,'keyboard')}>KeyBoard</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLRAM,'ram')}>RAM</button>
-                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLTaiNghe,'headphone')}>Tai Nghe</button>
+            }
+            {visibleStatus[1] === '1' &&
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(about, 'about')}>Trang giới thiệu</button>
+            }
+            {visibleStatus[2] === '1' &&
+                <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(allOrders, 'allOrders')}>Thông tin đặt hàng</button>
+            }        
+            {visibleStatus[3] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLGetAllAccounts, 'accounts')}>Quản lý tài khoản</button>
+            }
+            {visibleStatus[4] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLBlog, 'blogs')}>Quản lý Blogs</button>
+            }
+            {visibleStatus[5] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(feedBack, 'feedback')}>FeedBack</button>
+            }
+            {visibleStatus[6] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLLap, 'lap')}>LapTop</button>
+            }
+            {visibleStatus[7] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLCPU, 'cpu')}>CPU</button>
+            }
+            {visibleStatus[8] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLMouse, 'mouse')}>Mouse</button>
+            }
+            {visibleStatus[9] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLKeyBoard, 'keyboard')}>KeyBoard</button>
+            }
+            {visibleStatus[10] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLRAM, 'ram')}>RAM</button>
+            }
+            {visibleStatus[11] === '1' &&
+            <button className='btn btn-primary mx-1' onClick={() => handleSelectURL(URLTaiNghe, 'headphone')}>Tai Nghe</button>
+            }
+            </>
+        }
         </div>
 
         <div className="admin-table">
@@ -1111,13 +1254,17 @@ function admin() {
             }
             <span className='mx-2 text-capitalize'>Type: {type}</span>
 
+            {visibleStatus[12] === '1' &&
             <Button variant="primary" onClick={handleShow}>
                 {type === 'blogs' ? "Viết blog" : "Thêm sản phẩm"}
             </Button>
+            }   
 
             {/* <button onClick={() => setShowPass(true)} className='btn btn-primary mx-4'>Thay đổi mật khẩu</button> */}
             <button onClick={() => handleLogout()} className='btn ms-2 btn-warning' >Đăng xuất</button>
+            {visibleStatus[13] === '1' &&
             <button onClick={() => handleExport()} className='btn mx-2 btn-primary' >Export</button>
+            }
             <div className="d-flex col-4 my-2" >
                 <input value={search} onKeyDown={(e) => listenSearch(e)} onChange={(e) => setSearch(e.target.value)} className="form-control my-auto me-2" placeholder="Tìm kiếm"/>
                 <button onClick={() => handleSearch()} className="btn my-auto btn-outline-success" type=""><IoSearch /></button>
@@ -1202,7 +1349,9 @@ function admin() {
                             <th>SDT</th>
                             <th>Link avatar</th>
                             <th>Quyền</th>
-                            <th>Phân quyền</th>
+                            <th>Visible</th>
+                            <th>Quyền</th>
+                            <th>Loại</th>
                             <th>Xóa</th>
                             </>
                         }
@@ -1450,7 +1599,9 @@ function admin() {
                                     <td><p>{item.sdt}</p></td>
                                     <td><img src={item.image} alt="1" className='rounded-circle' height={'60px'} /></td>
                                     <td><p>{item.phanQuyen}</p></td>
-                                    <td><button onClick={() => handleEditPermission(item.idTaiKhoan)} className='btn btn-danger'>Chỉnh</button></td>
+                                    <td><p>{item.visible}</p></td>
+                                    <td><button onClick={() => handleEditVisible(item.idTaiKhoan)} className='btn btn-primary'>Chỉnh</button></td>
+                                    <td><button onClick={() => handleEditPermission(item.idTaiKhoan)} className='btn btn-primary'>Chỉnh</button></td>
                                     <td><button onClick={() => handleDeleteAccount(item.idTaiKhoan)} className='btn btn-danger'>Xóa</button></td>
                                                 {/* Modal edit permission */}
                                     </>
@@ -1573,7 +1724,7 @@ function admin() {
                 }
                 </tbody>
             </Table>
-
+            
             {totalPages > 1 &&
             <div className='d-flex justify-content-center mt-2'>
             <ReactPaginate
@@ -1894,9 +2045,106 @@ function admin() {
                 </Button>
                 </Modal.Footer>
             </Modal>
+                {/* Visible */}
+            <Modal size="lg" backdrop="static" className='text-black' show={showVisible} onHide={handleCloseVisible}>
+                <Modal.Header closeButton>
+                <Modal.Title>Điều chỉnh visible</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <div className="btn-group body-visible d-flex flex-wrap" role="group" aria-label="Basic checkbox toggle button group">
+                    <div>
+                    <input type="checkbox" className="btn-check" id="infoshop" autoComplete="off" checked={checkboxes.infoshop} onChange={handleCheckboxChange}/>
+                    <label className="btn btn-outline-primary" htmlFor="infoshop">Thông tin shop</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="about" autoComplete="off" checked={checkboxes.about} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="about">Trang giới thiệu</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="orders" autoComplete="off" checked={checkboxes.orders} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="orders">Thông tin đặt</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="accounts" autoComplete="off" checked={checkboxes.accounts} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="accounts">Quản lý tài khoản</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="blogs" autoComplete="off" checked={checkboxes.blogs} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="blogs">Quản lý blogs</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="feedback" autoComplete="off" checked={checkboxes.feedback} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="feedback">Feedback</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="laptop" autoComplete="off" checked={checkboxes.laptop} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="laptop">Laptop</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="cpu" autoComplete="off" checked={checkboxes.cpu} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="cpu">CPU</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="mouse" autoComplete="off" checked={checkboxes.mouse} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="mouse">Mouse</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="keyboard" autoComplete="off" checked={checkboxes.keyboard} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="keyboard">Keyboard</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="ram" autoComplete="off" checked={checkboxes.ram} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="ram">RAM</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="headphone" autoComplete="off" checked={checkboxes.headphone} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="headphone">Tai nghe</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="themsanpham" autoComplete="off" checked={checkboxes.themsanpham} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="themsanpham">Thêm sản phẩm</label>
+                    </div>
+
+                    <div>
+                    <input type="checkbox" className="btn-check" id="export" autoComplete="off" checked={checkboxes.export} onChange={handleCheckboxChange} />
+                    <label className="btn btn-outline-primary" htmlFor="export">Export</label>
+                    </div>
+                </div>
+                <button className='btn btn-info' onClick={handleFullVisible}>Full visible</button>
+                <button className='btn btn-warning' onClick={handleNoneVisible}>Dissable all visible</button>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseVisible}>
+                    Thoát
+                </Button>
+                <Button variant="primary" onClick={submitVisible}>
+                    Xác nhận
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
         </div>
         </div>
+    }
+        {visibleStatus && visibleStatus === '00000000000000' && 
+        <> 
+        <div className='cotainer-xxl p-5'>
+        <h1 className='text-center'>Bạn không có quyền hạn nào trong admin !</h1>
+        </div>
+        </> 
+        }
     </>);
 }
 

@@ -1226,3 +1226,9 @@ button:disabled {
 .icon-finalcheckout:hover {
   color: #ff6000;
 }
+
+/* Visible */
+
+.body-visible div {
+  margin: 3px;
+}

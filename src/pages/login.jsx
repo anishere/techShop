@@ -89,6 +89,7 @@ function login() {
                     theme: "dark",
                     });
                     localStorage.setItem('isLoggedIn', true);
+                    localStorage.setItem('visible', response.visible.trim());
                     dispatch(SetIdTaiKhoan(response.idTaiKhoan))
                     dispatch(SetAuth(true))
                     navigate('../admin')
