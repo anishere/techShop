@@ -7,6 +7,7 @@ import { axiosCus } from "../axios/axios";
 import { URLlogin } from "../URL/url";
 import { useDispatch, useSelector } from 'react-redux'
 import { SetAuth, SetIdTaiKhoan } from "../redux/authSlice";
+import firebase from "../firebase";
 
 function login() {
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
@@ -35,6 +36,54 @@ function login() {
         navigate('/')
     }
 
+    const setupCaptcha = () => {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button',{
+            size: 'invisible',
+            defaultCountry: 'VN',
+        })
+    }
+
+    useEffect(() => {
+        setupCaptcha();
+    },[])
+
+    const handleSendOTP = async () => {
+        const appVerify = window.recaptchaVerifier;
+        await firebase.auth().signInWithPhoneNumber(SDT, appVerify)
+        .then((res) => {
+            window.confirmationResult = res;
+            alert("Gửi thành công")
+        })
+        .catch((err) => {
+            alert("Thất bại", err);
+        })
+    }
+
+    const [otp, setOTP] = useState();
+
+    const handleVerifyOTP = () => {
+        window.confirmationResult
+        .confirm(otp)
+        .then(() => {
+            alert("Xác nhận thành công");
+            toast.success('Đăng kí thành công', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
+            setRegister(!register)
+        })
+        .catch((err) => {
+            console.error(err);
+            alert("Xác nhận thất bại")
+        })
+    }
+
     const handleLogin = async (name, password) => {
         try {
             if(register === true) {
@@ -46,18 +95,10 @@ function login() {
                     password: password,
                   });
 
+                  handleSendOTP()
+
                   if(response) {
-                    toast.success('Đăng kí thành công', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                        });
-                    setRegister(!register)
+                    ''
                   } else {
                     toast.error('Tài khoản đã tồn tại hoặc lỗi thông tin', {
                         position: "top-right",
@@ -180,12 +221,26 @@ function login() {
             }
             <span onClick={() => setRegister(!register)}>{register ? "Đăng nhập" : "Đăng kí"}</span>
             <button 
+                id="sign-in-button"
                 className={name && password ? 'active' : ''}
                 disabled = {name && password ? false : true}
                 onClick={() => handleLogin(name, password)}
             >
                 &nbsp; {register ? 'Đăng kí' : 'Đăng nhập'}
             </button>
+            {register && 
+            <>
+            <div className="mt-3">
+                <input 
+                    type="text" 
+                    placeholder='OTP'
+                    value={otp}
+                    onChange={(e) => setOTP(e.target.value)}
+                />
+                <button onClick={() => handleVerifyOTP()} className="btn btn-primary" >Xác nhận OTP</button>
+            </div>
+            </>
+            }
             <div className='goBack'>
                 <span onClick={() => {handleBack()}}>
                     <i className="fa-solid fa-angle-left mx-1"></i>
