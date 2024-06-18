@@ -15,6 +15,7 @@ import ProdWitchSearch from './pages/prodWithSearch'
 import InfoUser from './pages/infoUser'
 import Blogs from './pages/blogs'
 import FinalCheckout from './pages/finalCheckout'
+import Compare from './pages/compare'
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -43,6 +44,7 @@ function App() {
             <Route path='infoUser' element={<InfoUser/>}/>
             <Route path='blogs' element={<Blogs/>}/>
             <Route path='finalcheckout' element={<FinalCheckout/>}/>
+            <Route path='compare' element={<Compare/>}/>
           </Route>
         </Routes>
         <ToastContainer />

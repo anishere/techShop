@@ -5,12 +5,14 @@ import { URLLap, URLtotalProd, URLtotalProdBrand, URLCPU, URLKeyBoard, URLMouse,
 import { URLBrandsLap, URLBrandsCPU, URLBrandsRAM, URLBrandsHeadPhone, URLBrandsKeyBoard, URLBrandsMouse } from "../URL/url";
 import { useDispatch, useSelector } from "react-redux";
 import { UpInfoProd, addItem } from "../redux/detailSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { URLtotalProdCPU, URLtotalProdKeyBoard, URLtotalProdMouse, URLtotalProdRAM, URLtotalProdHeadPhone } from "../URL/url";
 import { URLtotalProdCPUbyBrand, URLtotalProdKeyBoardbyBrand, 
     URLtotalProdMousebyBrand, URLtotalProdRAMbyBrand, URLtotalProdHeadPhonebyBrand
  } from "../URL/url";
+ import { CiCirclePlus } from "react-icons/ci";
+ import { MdOutlineCompare } from "react-icons/md";
 
 import claptop from "../assets/imgs/categoryProd/claptop.webp";
 import ccpu from "../assets/imgs/categoryProd/ccpu.webp";
@@ -18,6 +20,7 @@ import cmouse from "../assets/imgs/categoryProd/cmouse.webp";
 import ckeyboard from "../assets/imgs/categoryProd/ckeyboard.webp";
 import cheadphone from "../assets/imgs/categoryProd/cheadphone.webp";
 import cram from "../assets/imgs/categoryProd/cram.webp"
+import { HandleCompare1, HandleCompare2 } from "../redux/compareSlice";
 
 function shop() {
     const dispatch = useDispatch()
@@ -202,6 +205,27 @@ function shop() {
         dispatch(addItem({productId: id, prodsType: type}))
     }
 
+    const navigate = useNavigate();
+
+    // eslint-disable-next-line no-unused-vars
+    const [idCom1, setIdCom1] = useState()
+    // eslint-disable-next-line no-unused-vars
+    const [idCom2, setIdCom2] = useState()
+
+    const id1 = useSelector(state => state.compare.id1)
+    
+    useEffect(() => {
+        setIdCom1(id1)
+    }, [id1])
+
+    const handleAddId1 = (id) => {
+        dispatch(HandleCompare1(id))
+    }
+
+    const handleAddId2 = (id) => {
+        dispatch(HandleCompare2(id))
+        navigate('../compare')
+    }
 
     return (<>
         <section className="banner-shop">
@@ -314,6 +338,12 @@ function shop() {
                             <Link onClick={() => {handleAddItem(prod.productID, prod.type)}} className="btn my-2">Mua ngay
                             { ids && ids[prod.type][prod.productID] > 0 && <span>&nbsp;({ids[prod.type][prod.productID]})</span>}
                             </Link>
+                            {id1 === null &&
+                                <i onClick={() => handleAddId1(prod.productID)} className="fs-3 icon float-end"><CiCirclePlus /></i>
+                            }
+                            {id1 !== null &&
+                                <i onClick={() => handleAddId2(prod.productID)} className="fs-3 icon float-end"><MdOutlineCompare /></i>
+                            }
                         </div>
                     </div>
                     )
@@ -330,6 +360,7 @@ function shop() {
                                 <Link onClick={() => {handleAddItem(prod.productID, prod.type)}} href="" className="btn my-2">Mua ngay
                                 { ids && ids[prod.type][prod.productID] > 0 && <span>&nbsp;({ids[prod.type][prod.productID]})</span>}
                                 </Link>
+                                <i></i>
                             </div>
                         </div>
                     )
