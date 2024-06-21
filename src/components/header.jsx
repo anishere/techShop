@@ -48,7 +48,7 @@ function header() {
     const isAuth = useSelector((state) => state.auth.isAuthenticated)
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const isUser = localStorage.getItem('isUser') === 'true';
-    const idTaiKhoan = useSelector((state) => state.auth.idTaiKhoan)
+    const idTaiKhoan = localStorage.getItem('IDAccount');
     const [infoUser, setInfoUser] = useState();
 
       useEffect(() => {
@@ -65,6 +65,9 @@ function header() {
       const handleLogOut = () => {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('isUser');
+        localStorage.removeItem('IDAccount');
+        localStorage.removeItem('_grecaptcha');
+        localStorage.removeItem('visible');
         navigate('../')
         window.location.reload();
       }

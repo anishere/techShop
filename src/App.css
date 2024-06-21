@@ -980,6 +980,10 @@ button:disabled {
   cursor: pointer;
 }
 
+.login span {
+  cursor: pointer;
+}
+
 /* End */
 
 /* DetailUpdate */

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useState } from "react"
 import { axiosCus } from "../axios/axios"
-import { useSelector } from "react-redux"
 import { FaUserEdit } from "react-icons/fa";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -29,15 +28,26 @@ function infoUser() {
 
     const [infoUser, setInfoUser] = useState();
 
-    const idTaiKhoan = useSelector((state) => state.auth.idTaiKhoan)
+    //const idTaiKhoan = useSelector((state) => state.auth.idTaiKhoan)
+    const idTaiKhoan = localStorage.getItem('IDAccount');
 
     useEffect(() => {      
             const fetchData = async () => {
                 const res = await axiosCus.get(`Account/account/${idTaiKhoan}`)
                 setInfoUser(res)
+                // const maintain = {
+                //     email : res.email,
+                //     sdt : res.sdt,
+                //     userName: res.userName,
+                //     image: res.image,
+                // }
+                // localStorage.setItem('maintainUser', JSON.stringify(maintain));
             }
             fetchData();    
       },[idTaiKhoan, load])
+
+    //   const maintainUserString = localStorage.getItem('maintainUser');
+    //   const maintainUser = JSON.parse(maintainUserString);
 
       useEffect(() => {
         if(infoUser) {

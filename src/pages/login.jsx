@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { axiosCus } from "../axios/axios";
 import { URLlogin } from "../URL/url";
 import { useDispatch, useSelector } from 'react-redux'
-import { SetAuth, SetIdTaiKhoan } from "../redux/authSlice";
+import { SetAuth } from "../redux/authSlice";
 import firebase from "../firebase";
 
 function login() {
@@ -61,56 +61,46 @@ function login() {
 
     const [otp, setOTP] = useState();
 
-    const handleVerifyOTP = () => {
-        window.confirmationResult
-        .confirm(otp)
-        .then(() => {
-            alert("Xác nhận thành công");
-            toast.success('Đăng kí thành công', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
+    const handleVerifyOTP = async () => {
+        try {
+            // Xác nhận OTP
+            await window.confirmationResult.confirm(otp);
+            
+            // Chuyển thông tin vào bảng Account
+            const response = await axiosCus.post('Account/register', {
+                email: email,
+                image: image,
+                sdt: SDT,
+                userName: name,
+                password: password,
+            });
+    
+            // Thông báo thành công
+            if (response) {
+                alert("Xác nhận thành công");
+                toast.success('Đăng kí thành công', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
                 });
-            setRegister(!register)
-        })
-        .catch((err) => {
+                setRegister(!register);
+            }
+        } catch (err) {
             console.error(err);
-            alert("Xác nhận thất bại")
-        })
-    }
+            alert("Xác nhận thất bại");
+        }
+    };
+    
 
     const handleLogin = async (name, password) => {
         try {
             if(register === true) {
-                const response = await axiosCus.post(`Account/register`, {
-                    email: email,
-                    image: image,
-                    sdt: SDT,
-                    userName: name,
-                    password: password,
-                  });
-
-                  handleSendOTP()
-
-                  if(response) {
-                    ''
-                  } else {
-                    toast.error('Tài khoản đã tồn tại hoặc lỗi thông tin', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "dark",
-                        });
-                  }
+                handleSendOTP()
             } else {
                 const response = await axiosCus.post(`${URLlogin}`, {
                     userName: name,
@@ -131,7 +121,8 @@ function login() {
                     });
                     localStorage.setItem('isLoggedIn', true);
                     localStorage.setItem('visible', response.visible.trim());
-                    dispatch(SetIdTaiKhoan(response.idTaiKhoan))
+                    localStorage.setItem('IDAccount', response.idTaiKhoan);
+                    //dispatch(SetIdTaiKhoan(response.idTaiKhoan))
                     dispatch(SetAuth(true))
                     navigate('../admin')
                 } else if (response.phanQuyen === 'user') {
@@ -146,7 +137,7 @@ function login() {
                         theme: "dark",
                         });
                         localStorage.setItem('isUser', true);
-                        dispatch(SetIdTaiKhoan(response.idTaiKhoan))
+                        localStorage.setItem('IDAccount', response.idTaiKhoan);
                         navigate('../')
                 } 
                 else {
