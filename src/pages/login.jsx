@@ -72,7 +72,7 @@ function login() {
                 image: image,
                 sdt: SDT,
                 userName: name,
-                password: password,
+                password: password.trim(),
             });
     
             // Thông báo thành công
@@ -97,14 +97,14 @@ function login() {
     };
     
 
-    const handleLogin = async (name, password) => {
+    const handleLogin = async () => {
         try {
             if(register === true) {
                 handleSendOTP()
             } else {
                 const response = await axiosCus.post(`${URLlogin}`, {
                     userName: name,
-                    password: password
+                    password: password,
                 });
             
                 // Xử lý dữ liệu trả về nếu cần thiết
@@ -160,7 +160,7 @@ function login() {
     }
 
     const handlePressEnter = (e) => {
-        if(e.key === 'Enter') {
+        if (e.keyCode === 13) {
             handleLogin()
         }
     }
